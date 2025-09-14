@@ -21,9 +21,8 @@ public class AuthFilter implements Filter {
 
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
-        System.out.println("📨 Acessando URL: " + path);
+        System.out.println("Acessando URL: " + path);
 
-        // URLs públicas - PERMITIR ACESSO SEM LOGIN
         if (path.equals("/login") ||
                 path.startsWith("/console") ||
                 path.startsWith("/css/") ||
@@ -38,7 +37,6 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        // ... resto do código
     }
     public void destroy() {}
 }

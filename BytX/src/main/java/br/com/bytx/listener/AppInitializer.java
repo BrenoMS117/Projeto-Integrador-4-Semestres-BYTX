@@ -11,25 +11,22 @@ public class AppInitializer implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        System.out.println("=========================================");
-        System.out.println("🚀 Iniciando aplicação BytX...");
+        System.out.println("Iniciando aplicação BytX");
         System.out.println("=========================================");
 
-        System.out.println("📊 Criando tabelas e inserindo dados...");
+        System.out.println("Criando tabelas e inserindo dados");
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         usuarioDAO.criarTabelaUsuario();
         usuarioDAO.criarTabelaGrupos();
-        usuarioDAO.inserirDadosIniciais(); // ← ISSO AQUI É IMPORTANTE!
+        usuarioDAO.inserirDadosIniciais();
 
-        System.out.println("✅ Configuração inicial concluída!");
-        System.out.println("=========================================");
+        System.out.println("Configuração inicial concluída!");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         System.out.println("=========================================");
-        System.out.println("🛑 Encerrando aplicação BytX...");
-        System.out.println("=========================================");
+        System.out.println("Encerrando aplicação BytX...");
     }
 }

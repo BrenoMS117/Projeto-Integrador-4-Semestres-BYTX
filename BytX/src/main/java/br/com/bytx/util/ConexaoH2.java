@@ -22,10 +22,10 @@ public class ConexaoH2 {
             Class.forName("org.h2.Driver");
             conexao = DriverManager.getConnection(URL, USER, PASSWORD);
             criarTabelas();
-            System.out.println("✅ Conexão com H2 estabelecida com sucesso!");
-            System.out.println("📊 Database: " + URL);
+            System.out.println("Conexão com H2 estabelecida com sucesso!");
+            System.out.println("Database: " + URL);
         } catch (Exception e) {
-            System.err.println("❌ Erro ao conectar com H2: " + e.getMessage());
+            System.err.println("Erro ao conectar com H2: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -73,11 +73,11 @@ public class ConexaoH2 {
                     "KEY (email) VALUES (1, 'Administrador', '12345678901', 'admin@bytX.com', " +
                     "'$2a$12$Y9y4WqT7WU6uQ5p5V5z5Nu5V5z5Nu5V5z5Nu5V5z5Nu5V5z5Nu5V5a', 'ADMIN', TRUE)");
 
-            System.out.println("✅ Tabelas criadas/verificadas com sucesso!");
-            System.out.println("👤 Usuário admin: admin@bytX.com / senha: admin123");
+            System.out.println("Tabelas criadas/verificadas com sucesso!");
+            System.out.println("Usuário admin: admin@bytX.com / senha: admin123");
 
         } catch (SQLException e) {
-            System.err.println("❌ Erro ao criar tabelas: " + e.getMessage());
+            System.err.println("Erro ao criar tabelas: " + e.getMessage());
         }
     }
 
@@ -85,10 +85,10 @@ public class ConexaoH2 {
         try {
             if (conexao != null && !conexao.isClosed()) {
                 conexao.close();
-                System.out.println("✅ Conexão fechada com sucesso!");
+                System.out.println("Conexão fechada com sucesso!");
             }
         } catch (SQLException e) {
-            System.err.println("❌ Erro ao fechar conexão: " + e.getMessage());
+            System.err.println("Erro ao fechar conexão: " + e.getMessage());
         }
     }
 }

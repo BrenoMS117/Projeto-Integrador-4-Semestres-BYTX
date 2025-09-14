@@ -13,7 +13,6 @@ public class CriptografiaUtil {
         }
 
         String hash = BCrypt.hashpw(senha, BCrypt.gensalt(12));
-        System.out.println("🔐 Hash gerado para senha: " + hash);
         return hash;
     }
 
@@ -26,36 +25,36 @@ public class CriptografiaUtil {
         System.out.println("Hash armazenado: '" + senhaCriptografada + "'");
 
         if (senhaDigitada == null) {
-            System.out.println("❌ Senha digitada é nula");
+            System.out.println("Senha digitada é nula");
             return false;
         }
 
         if (senhaCriptografada == null) {
-            System.out.println("❌ Hash armazenado é nulo");
+            System.out.println("Hash armazenado é nulo");
             return false;
         }
 
         if (senhaCriptografada.trim().isEmpty()) {
-            System.out.println("❌ Hash armazenado está vazio");
+            System.out.println("Hash armazenado está vazio");
             return false;
         }
 
         try {
             // Verifica se o hash tem o formato BCrypt
             if (!senhaCriptografada.startsWith("$2a$")) {
-                System.out.println("❌ Hash não parece ser BCrypt (não começa com $2a$)");
-                System.out.println("❌ Hash atual: " + senhaCriptografada);
+                System.out.println("Hash não parece ser BCrypt (não começa com $2a$)");
+                System.out.println("Hash atual: " + senhaCriptografada);
                 return false;
             }
 
             boolean resultado = BCrypt.checkpw(senhaDigitada, senhaCriptografada);
-            System.out.println("✅ Resultado da verificação: " + resultado);
+            System.out.println("Resultado da verificação: " + resultado);
 
             return resultado;
 
         } catch (Exception e) {
-            System.out.println("❌ Erro na verificação da senha: " + e.getMessage());
-            System.out.println("⚠️  Possível problema: Hash corrompido ou formato inválido");
+            System.out.println("Erro na verificação da senha: " + e.getMessage());
+            System.out.println("Possível problema: Hash corrompido ou formato inválido");
             e.printStackTrace();
             return false;
         }

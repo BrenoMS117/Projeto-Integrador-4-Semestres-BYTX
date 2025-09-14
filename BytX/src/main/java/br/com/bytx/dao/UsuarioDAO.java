@@ -29,9 +29,9 @@ public class UsuarioDAO {
         try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(SQL)) {
             ps.execute();
-            System.out.println("✅ Tabela 'usuarios' criada com sucesso!");
+            System.out.println("Tabela 'usuarios' criada com sucesso!");
         } catch (Exception e) {
-            System.out.println("❌ Erro ao criar tabela 'usuarios': " + e.getMessage());
+            System.out.println("Erro ao criar tabela 'usuarios': " + e.getMessage());
         }
     }
 
@@ -44,9 +44,9 @@ public class UsuarioDAO {
         try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(SQL)) {
             ps.execute();
-            System.out.println("✅ Tabela 'grupos' criada com sucesso!");
+            System.out.println("Tabela 'grupos' criada com sucesso!");
         } catch (Exception e) {
-            System.out.println("❌ Erro ao criar tabela 'grupos': " + e.getMessage());
+            System.out.println("Erro ao criar tabela 'grupos': " + e.getMessage());
         }
     }
 
@@ -68,14 +68,14 @@ public class UsuarioDAO {
              PreparedStatement psAdmin = connection.prepareStatement(SQLAdmin)) {
 
             psGrupos.execute();
-            System.out.println("✅ Grupos inseridos com sucesso!");
+            System.out.println("Grupos inseridos com sucesso!");
 
             psAdmin.execute();
-            System.out.println("✅ Usuário admin inserido com sucesso!");
-            System.out.println("👤 Admin: admin@bytX.com / senha: admin123");
+            System.out.println("Usuário admin inserido com sucesso!");
+            System.out.println("Admin: admin@bytX.com / senha: admin123");
 
         } catch (Exception e) {
-            System.out.println("ℹ️ Dados já existem ou erro ao inserir: " + e.getMessage());
+            System.out.println("Dados já existem ou erro ao inserir: " + e.getMessage());
         }
     }
 
@@ -87,7 +87,7 @@ public class UsuarioDAO {
         System.out.println("Grupo: " + usuario.getGrupo());
 
         if (!ValidadorCPF.validar(usuario.getCpf())) {
-            System.out.println("❌ CPF inválido: " + usuario.getCpf());
+            System.out.println("CPF inválido: " + usuario.getCpf());
             return false;
         }
 
@@ -109,12 +109,12 @@ public class UsuarioDAO {
             ps.setBoolean(6, usuario.isAtivo());
 
             int result = ps.executeUpdate();
-            System.out.println("✅ Linhas afetadas: " + result);
+            System.out.println("Linhas afetadas: " + result);
             return result > 0;
 
         } catch (SQLException e) {
-            System.out.println("❌ ERRO SQL: " + e.getMessage());
-            System.out.println("❌ Código do erro: " + e.getErrorCode());
+            System.out.println("ERRO SQL: " + e.getMessage());
+            System.out.println("Código do erro: " + e.getErrorCode());
             e.printStackTrace();
             return false;
         }
@@ -134,7 +134,7 @@ public class UsuarioDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Erro ao listar usuários: " + e.getMessage());
+            System.out.println("Erro ao listar usuários: " + e.getMessage());
         }
 
         return usuarios;
@@ -155,7 +155,7 @@ public class UsuarioDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Erro ao buscar usuário: " + e.getMessage());
+            System.out.println("Erro ao buscar usuário: " + e.getMessage());
         }
 
         return null;
@@ -181,12 +181,12 @@ public class UsuarioDAO {
             ps.setLong(5, usuario.getId());
 
             int linhasAfetadas = ps.executeUpdate();
-            System.out.println("✅ Linhas afetadas: " + linhasAfetadas);
+            System.out.println("Linhas afetadas: " + linhasAfetadas);
             return linhasAfetadas > 0;
 
         } catch (SQLException e) {
-            System.out.println("❌ ERRO SQL: " + e.getMessage());
-            System.out.println("❌ Código do erro: " + e.getErrorCode());
+            System.out.println("ERRO SQL: " + e.getMessage());
+            System.out.println("Código do erro: " + e.getErrorCode());
             e.printStackTrace();
             return false;
         }
@@ -203,11 +203,11 @@ public class UsuarioDAO {
             ps.setLong(2, id);
 
             int linhasAfetadas = ps.executeUpdate();
-            System.out.println("✅ Senha atualizada para usuário ID: " + id);
+            System.out.println("Senha atualizada para usuário ID: " + id);
             return linhasAfetadas > 0;
 
         } catch (SQLException e) {
-            System.out.println("❌ Erro ao atualizar senha: " + e.getMessage());
+            System.out.println("Erro ao atualizar senha: " + e.getMessage());
             return false;
         }
     }
@@ -223,11 +223,11 @@ public class UsuarioDAO {
             ps.setLong(2, id);
 
             int linhasAfetadas = ps.executeUpdate();
-            System.out.println("✅ Status alterado para usuário ID: " + id + " -> " + (ativo ? "ATIVO" : "INATIVO"));
+            System.out.println("Status alterado para usuário ID: " + id + " -> " + (ativo ? "ATIVO" : "INATIVO"));
             return linhasAfetadas > 0;
 
         } catch (SQLException e) {
-            System.out.println("❌ Erro ao alterar status: " + e.getMessage());
+            System.out.println("Erro ao alterar status: " + e.getMessage());
             return false;
         }
     }
@@ -263,33 +263,33 @@ public class UsuarioDAO {
             Usuario usuario = buscarUsuarioPorEmail(email);
 
             if (usuario == null) {
-                System.out.println("❌ USUÁRIO NÃO ENCONTRADO no banco de dados");
+                System.out.println("USUÁRIO NÃO ENCONTRADO no banco de dados");
                 return null;
             }
 
-            System.out.println("✅ Usuário encontrado: " + usuario.getEmail());
+            System.out.println("Usuário encontrado: " + usuario.getEmail());
             System.out.println("Hash no banco: " + usuario.getSenha());
 
             if (!usuario.isAtivo()) {
-                System.out.println("❌ USUÁRIO INATIVO");
+                System.out.println("USUÁRIO INATIVO");
                 return null;
             }
 
-            System.out.println("🔐 Verificando senha com BCrypt...");
+            System.out.println("Verificando senha com BCrypt...");
 
             // Verificar se o hash é BCrypt válido
             if (!usuario.getSenha().startsWith("$2a$")) {
-                System.out.println("❌ Hash não é BCrypt válido - atualizando automaticamente");
+                System.out.println("Hash não é BCrypt válido - atualizando automaticamente");
 
                 // Gerar novo hash BCrypt
                 String novoSenhaHash = CriptografiaUtil.criptografarSenha(senha);
 
                 // Atualizar no banco
                 if (atualizarSenha(usuario.getId(), senha)) {
-                    System.out.println("✅ Hash atualizado com sucesso");
+                    System.out.println("Hash atualizado com sucesso");
                     usuario.setSenha(novoSenhaHash);
                 } else {
-                    System.out.println("❌ Falha ao atualizar hash no banco");
+                    System.out.println("Falha ao atualizar hash no banco");
                     return null;
                 }
             }
@@ -299,15 +299,15 @@ public class UsuarioDAO {
             System.out.println("Senha válida: " + senhaValida);
 
             if (senhaValida) {
-                System.out.println("✅ LOGIN BEM-SUCEDIDO");
+                System.out.println("LOGIN BEM-SUCEDIDO");
                 return usuario;
             } else {
-                System.out.println("❌ SENHA INVÁLIDA");
+                System.out.println("SENHA INVÁLIDA");
                 return null;
             }
 
         } catch (Exception e) {
-            System.out.println("❌ ERRO EXCEÇÃO: " + e.getMessage());
+            System.out.println("ERRO EXCEÇÃO: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -331,7 +331,7 @@ public class UsuarioDAO {
             return rs.next();
 
         } catch (SQLException e) {
-            System.out.println("❌ Erro ao verificar CPF: " + e.getMessage());
+            System.out.println("Erro ao verificar CPF: " + e.getMessage());
             return false;
         }
     }

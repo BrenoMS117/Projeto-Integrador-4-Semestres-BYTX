@@ -39,16 +39,16 @@ public class LoginServlet extends HttpServlet {
             int linhas = ps.executeUpdate();
 
             if (linhas > 0) {
-                System.out.println("✅ Hash do admin atualizado com sucesso!");
+                System.out.println("Hash do admin atualizado com sucesso!");
             } else {
-                System.out.println("⚠️  Admin não encontrado para atualizar hash");
+                System.out.println("Admin não encontrado para atualizar hash");
             }
 
             ps.close();
             connection.close();
 
         } catch (Exception e) {
-            System.out.println("❌ Erro ao corrigir hash: " + e.getMessage());
+            System.out.println("Erro ao corrigir hash: " + e.getMessage());
         }
     }
 
@@ -57,24 +57,20 @@ public class LoginServlet extends HttpServlet {
 
         System.out.println("GET /login - Context Path: " + request.getContextPath());
 
-        // Se já estiver logado, redireciona para o dashboard
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("usuarioLogado") != null) {
             response.sendRedirect(request.getContextPath() + "../WEB_INF/view/admin/dashboard");
             return;
         }
 
-        // Se não estiver logado, mostra a página de login
         request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // === CÓDIGO DE DEBUG TEMPORÁRIO ===
         System.out.println("=== DEBUG INICIADO ===");
 
-        // Testar BCrypt diretamente
         String senhaTeste = "admin123";
         String hashTeste = CriptografiaUtil.criptografarSenha(senhaTeste);
         System.out.println("Novo hash gerado: " + hashTeste);
@@ -82,11 +78,9 @@ public class LoginServlet extends HttpServlet {
         boolean testeValido = CriptografiaUtil.verificarSenha(senhaTeste, hashTeste);
         System.out.println("Teste com novo hash: " + testeValido);
 
-        // Testar com hash do banco (substitua pelo hash real)
         String hashDoBanco = "$2a$12$r4A6aU6wz6q6q6q6q6q6qO6q6q6q6q6q6q6q6q6q6q6q6q6q6q6";
         boolean bancoValido = CriptografiaUtil.verificarSenha(senhaTeste, hashDoBanco);
         System.out.println("Teste com hash do banco: " + bancoValido);
-        // === FIM DO CÓDIGO DE DEBUG ===
 
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
@@ -94,20 +88,17 @@ public class LoginServlet extends HttpServlet {
         System.out.println("POST /login - Tentativa: " + email);
 
         try {
-            // Validar credenciais
             Usuario usuario = usuarioDAO.verificarLogin(email, senha);
 
             if (usuario != null) {
                 System.out.println("Usuário encontrado: " + usuario.getEmail());
 
-                // Verificar se é usuário de backoffice (não cliente)
                 if (!usuario.isAdministrador() && !usuario.isEstoquista()) {
                     request.setAttribute("erro", "Acesso permitido apenas para administradores e estoquistas");
                     request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
                     return;
                 }
 
-                // Criar sessão
                 HttpSession session = request.getSession();
                 session.setAttribute("usuarioLogado", usuario);
                 session.setAttribute("grupoUsuario", usuario.getGrupo());

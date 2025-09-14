@@ -27,7 +27,7 @@ public class LogoutServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
-            System.out.println("✅ Logout realizado com sucesso");
+            System.out.println("Logout realizado com sucesso");
         }
 
         response.sendRedirect(request.getContextPath() + "/login");
