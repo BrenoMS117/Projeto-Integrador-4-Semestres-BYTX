@@ -28,6 +28,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     private void corrigirHashAdmin() {
+        //Essa lógica permite atualizar automaticamente a senha do admin
         try {
             Connection connection = DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
             String novoSenhaHash = CriptografiaUtil.criptografarSenha("admin123");
@@ -59,7 +60,9 @@ public class LoginServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("usuarioLogado") != null) {
+            //Caso o usuário esteja logado, é evitado um "re-login"
             response.sendRedirect(request.getContextPath() + "../WEB_INF/view/admin/dashboard");
+            //Web_inf, pasta não pública
             return;
         }
 
@@ -68,7 +71,7 @@ public class LoginServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        //responsável por processar o login e verificação de permissão de admin ou estoquista.
         System.out.println("=== DEBUG INICIADO ===");
 
         String senhaTeste = "admin123";

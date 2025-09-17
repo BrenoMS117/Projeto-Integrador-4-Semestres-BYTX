@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/logout")
+//Responsável por encerrar sessão do usuário autenticado e redirecionar para o login.
 public class LogoutServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -24,12 +25,13 @@ public class LogoutServlet extends HttpServlet {
     private void fazerLogout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(false); //Busca de sessão existente
         if (session != null) {
-            session.invalidate();
+            session.invalidate(); //Deleta atributos da sessão
             System.out.println("Logout realizado com sucesso");
         }
-
+        //retorno para página de login.
         response.sendRedirect(request.getContextPath() + "/login");
+
     }
 }

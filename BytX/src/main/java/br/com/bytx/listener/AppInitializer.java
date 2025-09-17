@@ -7,9 +7,11 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 @WebListener
+//Inicialização de aplicação (deploy)
 public class AppInitializer implements ServletContextListener {
 
     @Override
+    //garantia que ao iniciar o sistema, já haja um usuário cadastrado
     public void contextInitialized(ServletContextEvent sce) {
         System.out.println("Iniciando aplicação BytX");
         System.out.println("=========================================");
@@ -25,6 +27,7 @@ public class AppInitializer implements ServletContextListener {
     }
 
     @Override
+    //Aplicação removida de deploy
     public void contextDestroyed(ServletContextEvent sce) {
         System.out.println("=========================================");
         System.out.println("Encerrando aplicação BytX...");

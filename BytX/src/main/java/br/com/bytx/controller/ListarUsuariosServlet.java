@@ -12,12 +12,13 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/admin/usuarios")
+//Carregamento de todos os usuários salvos no banco
 public class ListarUsuariosServlet extends HttpServlet {
 
     private UsuarioDAO usuarioDAO;
 
     @Override
-    public void init() throws ServletException {
+    public void init() throws ServletException { //Servlet iniciado
         this.usuarioDAO = new UsuarioDAO();
     }
 
@@ -25,6 +26,7 @@ public class ListarUsuariosServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // Verificar se usuário está logado e é ADMIN
+        //Repetindo variás vezes essa mesmo método de verificação
         Usuario usuarioLogado = (Usuario) request.getSession().getAttribute("usuarioLogado");
         if (usuarioLogado == null || !"ADMIN".equals(usuarioLogado.getGrupo())) {
             response.sendRedirect(request.getContextPath() + "/login");
@@ -32,11 +34,12 @@ public class ListarUsuariosServlet extends HttpServlet {
         }
 
         String mensagemSucesso = request.getParameter("sucesso");
+        //redireciona após o cadastro "/admin/usuarios?sucesso=Usuário criado com sucesso".
         if (mensagemSucesso != null) {
             request.setAttribute("mensagemSucesso", mensagemSucesso);
         }
 
-        // Buscar lista de usuários
+        // Responsável por buscar todos os usuários
         List<Usuario> usuarios = usuarioDAO.listarTodosUsuarios();
 
         // Filtrar por nome se existir parâmetro
@@ -51,8 +54,9 @@ public class ListarUsuariosServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/view/admin/listar-usuarios.jsp").forward(request, response);
     }
 
+    //filtro utilizando o JavaSteams
     private List<Usuario> filtrarPorNome(List<Usuario> usuarios, String filtro) {
-        return usuarios.stream()
+        return usuarios.stream() //Esse exemplo de filtro é feito na memória, após a busca pelos usuários.
                 .filter(u -> u.getNome().toLowerCase().contains(filtro.toLowerCase()))
                 .collect(java.util.stream.Collectors.toList());
     }

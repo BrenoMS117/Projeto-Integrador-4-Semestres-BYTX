@@ -8,12 +8,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//Centralizar toda a comunicação com o banco de dados
 public class UsuarioDAO {
 
+    //Iniciando conexão com o banco de dados
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
     }
-
+    //Criação de tabelas
     public void criarTabelaUsuario() {
         String SQL = "CREATE TABLE IF NOT EXISTS usuarios (" +
                 "id INT AUTO_INCREMENT PRIMARY KEY, " +
@@ -121,7 +123,7 @@ public class UsuarioDAO {
     }
 
     // CRUD - READ (Todos os usuários)
-    public List<Usuario> listarTodosUsuarios() {
+    public List<Usuario> listarTodosUsuarios() {//Para cada linha chama "mapearUsuario"
         List<Usuario> usuarios = new ArrayList<>();
         String SQL = "SELECT * FROM usuarios ORDER BY nome";
 
@@ -244,6 +246,7 @@ public class UsuarioDAO {
 
     // Método auxiliar para mapear ResultSet para objeto Usuario
     private Usuario mapearUsuario(ResultSet rs) throws SQLException {
+        //Transforma a linha do banco em um objeto usuário
         Usuario usuario = new Usuario();
         usuario.setId(rs.getLong("id"));
         usuario.setNome(rs.getString("nome"));

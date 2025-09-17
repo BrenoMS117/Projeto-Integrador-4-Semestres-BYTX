@@ -11,19 +11,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/admin/usuarios/editar")
+@WebServlet("/admin/usuarios/editar") //Acesso via url
+//Permissão que o admin acesse e altere os dados do usuário
 public class EditarUsuarioServlet extends HttpServlet {
 
-    private UsuarioDAO usuarioDAO;
+    private UsuarioDAO usuarioDAO;//Atributo declarado para acessar o banco de dados de usuários.
 
     @Override
     public void init() throws ServletException {
         this.usuarioDAO = new UsuarioDAO();
+        //Permitindo que o DAO esteja pronto para qualquer requisição. Requisição -
+        // (Mensagem enviada do navegador para o servidor).
     }
 
-    // === NOVO MÉTODO GET === //
+    //Método Get incremento
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Carregamento de usuário para ser feita as edições.
 
         System.out.println("=== ACESSANDO EDIÇÃO VIA GET ===");
 
@@ -33,10 +37,10 @@ public class EditarUsuarioServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
-
+        //E-mail do usuário que irá ser alterado
         String email = request.getParameter("email");
         System.out.println("Email recebido: " + email);
-
+        //Busca de usuário caso esteja cadastrado o e-mail correspondente
         if (email == null || email.isEmpty()) {
             response.sendRedirect(request.getContextPath() + "/admin/usuarios");
             return;
@@ -53,21 +57,21 @@ public class EditarUsuarioServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/view/admin/editar-usuario.jsp").forward(request, response);
     }
 
-    // === MÉTODO POST (JÁ EXISTENTE) === //
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+    //Tudo que foi preparado no método doGet, este método processa as requisições para envio dos dados.
         System.out.println("=== INICIANDO EDIÇÃO DE USUÁRIO ===");
 
         // Verificar se é ADMIN
         Usuario usuarioLogado = (Usuario) request.getSession().getAttribute("usuarioLogado");
         if (usuarioLogado == null || !"ADMIN".equals(usuarioLogado.getGrupo())) {
-            System.out.println("❌ ACESSO NEGADO - Não é ADMIN");
+            System.out.println(" ACESSO NEGADO - Não é ADMIN");
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        // Obter parâmetros
+        // Obter parâmetros para a edição de dados
         String emailParam = request.getParameter("email");
         String nome = request.getParameter("nome");
         String cpf = request.getParameter("cpf");
@@ -104,15 +108,15 @@ public class EditarUsuarioServlet extends HttpServlet {
         // Só permite alterar grupo se não for o próprio usuário
         if (!usuario.getEmail().equals(usuarioLogado.getEmail())) {
             usuario.setGrupo(grupo);
-            System.out.println("✅ Grupo alterado para: " + grupo);
+            System.out.println("Grupo alterado para: " + grupo);
 
-            // OBTER STATUS (apenas se não for o próprio usuário)
+            // OBTER SITUAÇÃO (apenas se não for o próprio usuário)
             String ativoParam = request.getParameter("usuarioAtivo");
             boolean novoStatus = "on".equals(ativoParam);
             usuario.setAtivo(novoStatus);
-            System.out.println("✅ Status alterado para: " + (novoStatus ? "ATIVO" : "INATIVO"));
+            System.out.println("Status alterado para: " + (novoStatus ? "ATIVO" : "INATIVO"));
         } else {
-            System.out.println("ℹ️ Mantendo grupo e status originais (é o próprio usuário)");
+            System.out.println("️Mantendo grupo e status originais (é o próprio usuário)");
         }
 
         // Atualizar senha se solicitado
