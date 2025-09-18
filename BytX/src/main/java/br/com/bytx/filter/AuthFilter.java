@@ -8,28 +8,21 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 //@WebFilter("/*")
-
-//Filter usado para o controle de acesso e logs.
 public class AuthFilter implements Filter {
 
-    //incluir configuração
-    public void init(FilterConfig config) throws ServletException {} //executado ao inicializar
+    public void init(FilterConfig config) throws ServletException {}
 
-    //Método principal da classe
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        //converte o valor destinado
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession session = httpRequest.getSession(false);
 
-        //Retorno da url completa e remove o contexto da aplicação "/bytx".
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
         System.out.println("Acessando URL: " + path);
 
-        //Caminhos que não é necessário ter login de acesso
         if (path.equals("/login") ||
                 path.startsWith("/console") ||
                 path.startsWith("/css/") ||

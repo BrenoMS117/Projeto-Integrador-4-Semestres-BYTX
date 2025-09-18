@@ -306,7 +306,7 @@
             <ul class="sidebar-menu">
                 <li class="active"><i class="fas fa-home"></i> Dashboard</li>
                 <li><i class="fas fa-chart-bar"></i> Relatórios</li>
-                <li><i class="fas fa-tag"></i> Produtos</li>
+                <li><a href="${pageContext.request.contextPath}/produto/listar" style="text-decoration: none; color: inherit;"><i class="fas fa-tag"></i> Produtos</a></li>
                 <li><a href="${pageContext.request.contextPath}/admin/usuarios" style="text-decoration: none; color: inherit;"><i class="fas fa-users"></i> Gerenciar Usuários</a></li>
                 <li><i class="fas fa-cog"></i> Configurações</li>
                 <li><i class="fas fa-database"></i> Console H2</li>
