@@ -1,0 +1,59 @@
+package br.com.bytx.controller.usuarios;
+
+import br.com.bytx.dao.UsuarioDAO;
+import br.com.bytx.model.Usuario;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
+@WebServlet("/admin/usuarios")
+public class ListarUsuariosServlet extends HttpServlet {
+
+    private UsuarioDAO usuarioDAO;
+
+    @Override
+    public void init() throws ServletException {
+        this.usuarioDAO = new UsuarioDAO();
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Verificar se usuário está logado e é ADMIN
+        Usuario usuarioLogado = (Usuario) request.getSession().getAttribute("usuarioLogado");
+        if (usuarioLogado == null || !"ADMIN".equals(usuarioLogado.getGrupo())) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+        String mensagemSucesso = request.getParameter("sucesso");
+        if (mensagemSucesso != null) {
+            request.setAttribute("mensagemSucesso", mensagemSucesso);
+        }
+
+        // Buscar lista de usuários
+        List<Usuario> usuarios = usuarioDAO.listarTodosUsuarios();
+
+        // Filtrar por nome se existir parâmetro
+        String filtroNome = request.getParameter("filtroNome");
+        if (filtroNome != null && !filtroNome.trim().isEmpty()) {
+            usuarios = filtrarPorNome(usuarios, filtroNome);
+        }
+
+        // Enviar dados para a JSP
+        request.setAttribute("usuarios", usuarios);
+        request.setAttribute("filtroNome", filtroNome);
+        request.getRequestDispatcher("/WEB-INF/view/admin/listar-usuarios.jsp").forward(request, response);
+    }
+
+    private List<Usuario> filtrarPorNome(List<Usuario> usuarios, String filtro) {
+        return usuarios.stream()
+                .filter(u -> u.getNome().toLowerCase().contains(filtro.toLowerCase()))
+                .collect(java.util.stream.Collectors.toList());
+    }
+}
