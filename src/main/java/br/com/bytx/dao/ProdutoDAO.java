@@ -404,4 +404,19 @@ public class ProdutoDAO {
             return false;
         }
     }
+
+    public Long obterUltimoIdInserido() {
+        String sql = "SELECT LAST_INSERT_ID()";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

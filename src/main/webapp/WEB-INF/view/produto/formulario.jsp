@@ -857,8 +857,31 @@
                     </div>
                 </form>
 
-                <!-- FORMULÁRIO 2: UPLOAD DE IMAGENS (APENAS PARA EDIÇÃO) -->
+                <!-- FORMULÁRIO 2: UPLOAD DE IMAGENS (PARA NOVOS PRODUTOS E EDIÇÃO) -->
+                <c:if test="${empty produto.id}">
+                    <!-- PARA NOVO PRODUTO: Upload junto com o formulário principal -->
+                    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                        <h3>Adicionar Imagens</h3>
+
+                        <div class="upload-section">
+                            <h4>Imagens do Produto</h4>
+                            <input type="file" name="imagens" id="imagensInput" multiple accept="image/*" class="form-control">
+                            <div class="form-help">Selecione uma ou mais imagens (Máx. 5MB cada)</div>
+
+                            <div class="form-check">
+                                <input type="checkbox" name="imagemPrincipalIndex" id="imagemPrincipalIndex" value="0">
+                                <label for="imagemPrincipalIndex">Primeira imagem será a principal</label>
+                            </div>
+
+                            <div id="imagensPreview" class="images-preview" style="display: none;">
+                                <!-- Preview das imagens será inserido aqui via JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
+
                 <c:if test="${not empty produto.id}">
+                    <!-- PARA EDIÇÃO: Sistema atual de gerenciamento -->
                     <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
                         <h3>Gerenciar Imagens</h3>
 
@@ -1029,6 +1052,58 @@
                     }
                 });
 
+                // Preview de imagens para novo produto
+                const imagensInput = document.getElementById('imagensInput');
+                const imagensPreview = document.getElementById('imagensPreview');
+
+                if (imagensInput && imagensPreview) {
+                    imagensInput.addEventListener('change', function(e) {
+                        imagensPreview.innerHTML = '';
+                        imagensPreview.style.display = 'none';
+
+                        const files = e.target.files;
+                        if (files.length > 0) {
+                            imagensPreview.style.display = 'flex';
+
+                            for (let i = 0; i < files.length; i++) {
+                                const file = files[i];
+                                const reader = new FileReader();
+
+                                reader.onload = function(e) {
+                                    const previewItem = document.createElement('div');
+                                    previewItem.className = 'image-preview-item';
+
+                                    const img = document.createElement('img');
+                                    img.src = e.target.result;
+
+                                    const actions = document.createElement('div');
+                                    actions.className = 'image-actions';
+
+                                    if (i === 0) {
+                                        const badge = document.createElement('span');
+                                        badge.className = 'badge-primary';
+                                        badge.textContent = 'Principal';
+                                        actions.appendChild(badge);
+                                    }
+
+                                    previewItem.appendChild(img);
+                                    previewItem.appendChild(actions);
+                                    imagensPreview.appendChild(previewItem);
+                                }
+
+                                reader.readAsDataURL(file);
+                            }
+                        }
+                    });
+                }
+
+                // Alterar o formulário principal para multipart
+                document.addEventListener('DOMContentLoaded', function() {
+                    const mainForm = document.querySelector('form');
+                    if (mainForm && !mainForm.getAttribute('enctype')) {
+                        mainForm.setAttribute('enctype', 'multipart/form-data');
+                    }
+                });
 
     </script>
 </body>

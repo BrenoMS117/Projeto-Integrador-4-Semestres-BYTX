@@ -307,12 +307,7 @@
     <div class="container">
         <div class="sidebar">
             <ul class="sidebar-menu">
-                <li class="active"><i class="fas fa-home"></i> Dashboard</li>
-                <li><a href="${pageContext.request.contextPath}/estoque/produtos" style="text-decoration: none; color: inherit;">
-                    <i class="fas fa-boxes"></i> Gerenciar Estoque</a>
-                </li>
-                <li><i class="fas fa-chart-bar"></i> Relatórios</li>
-                <li><i class="fas fa-user"></i> Meu Perfil</li>
+                <li><a href="${pageContext.request.contextPath}/estoque/produtos" style="text-decoration: none; color: inherit;"><i class="fas fa-boxes"></i> Gerenciar Estoque</a></li>
             </ul>
         </div>
 
@@ -339,35 +334,9 @@
                     </div>
                 </div>
 
-                <div class="card card-estoque">
-                    <div class="card-header">
-                        <div class="card-title">Estoque Baixo</div>
-                        <div class="card-icon">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                    </div>
-                    <div class="card-value">Verificar</div>
-                    <div class="card-text">Produtos com estoque crítico</div>
-                </div>
-
-                <div class="card card-estoque">
-                    <div class="card-header">
-                        <div class="card-title">Suporte</div>
-                        <div class="card-icon">
-                            <i class="fas fa-headset"></i>
-                        </div>
-                    </div>
-                    <div class="card-value">Ajuda</div>
-                    <div class="card-text">Manual do estoquista</div>
                 </div>
             </div>
 
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="${pageContext.request.contextPath}/estoque/produtos"
-                   class="btn-primary" style="font-size: 18px; padding: 15px 30px;">
-                    <i class="fas fa-boxes"></i> COMEÇAR A GERENCIAR ESTOQUE
-                </a>
-            </div>
         </div>
     </div>
 

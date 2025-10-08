@@ -1,4 +1,5 @@
 br\com\bytx\controller\estoque\DashboardEstoqueServlet.class
+br\com\bytx\controller\estoque\VisualizarProdutoEstoqueServlet.class
 br\com\bytx\controller\estoque\EstoqueDashboardServlet.class
 br\com\bytx\model\produto\ImagemProduto.class
 br\com\bytx\controller\produto\VisualizarProdutoServlet.class
