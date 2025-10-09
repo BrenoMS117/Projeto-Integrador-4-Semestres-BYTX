@@ -19,7 +19,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 
-@WebServlet("/produto/imagens")
+@WebServlet("/produto/imagens/*") // ⬅️ ADICIONAR PATTERN PARA SERVIR IMAGENS
 @MultipartConfig(
         maxFileSize = 1024 * 1024 * 5,      // 5 MB
         maxRequestSize = 1024 * 1024 * 10   // 10 MB
@@ -28,6 +28,17 @@ public class ImagemProdutoServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // ⬅️ VERIFICAR SE É PARA SERVIR UMA IMAGEM (acesso público)
+        String pathInfo = request.getPathInfo();
+
+        if (pathInfo != null && !pathInfo.equals("/")) {
+            // É uma requisição para servir uma imagem (/produto/imagens/nome-da-imagem)
+            servirImagemPublica(request, response);
+            return;
+        }
+
+        // ⬅️ SE NÃO, É A FUNCIONALIDADE ORIGINAL (gerenciar imagens - requer admin)
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
 
@@ -49,6 +60,68 @@ public class ImagemProdutoServlet extends HttpServlet {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/produto/gerenciar-imagens.jsp");
         dispatcher.forward(request, response);
+    }
+
+    // ⬅️ NOVO MÉTODO PARA SERVIR IMAGENS PUBLICAMENTE
+    private void servirImagemPublica(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+
+        try {
+            // Extrair o nome do arquivo da URL
+            String filename = request.getPathInfo().substring(1);
+            System.out.println("📁 Servindo imagem pública: " + filename);
+
+            if (filename == null || filename.isEmpty()) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Nome do arquivo não especificado");
+                return;
+            }
+
+            // Buscar informações da imagem no banco para verificar se o produto está ativo
+            ImagemProdutoDAO imagemDAO = new ImagemProdutoDAO();
+            ImagemProduto imagem = imagemDAO.buscarPorNomeArquivo(filename);
+
+            if (imagem != null) {
+                // Verificar se o produto está ativo
+                ProdutoDAO produtoDAO = new ProdutoDAO();
+                Produto produto = produtoDAO.buscarPorId(imagem.getProduto().getId());
+
+                if (produto == null || !produto.isAtivo()) {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Produto não disponível");
+                    return;
+                }
+            }
+
+            // Caminho onde as imagens estão salvas
+            String uploadPath = getServletContext().getRealPath("/uploads/imagens");
+            File file = new File(uploadPath, filename);
+
+            System.out.println("🔍 Procurando arquivo em: " + file.getAbsolutePath());
+            System.out.println("📄 Arquivo existe: " + file.exists());
+
+            if (!file.exists()) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Imagem não encontrada: " + filename);
+                return;
+            }
+
+            // Determinar o tipo MIME
+            String mimeType = getServletContext().getMimeType(filename);
+            if (mimeType == null) {
+                mimeType = "application/octet-stream";
+            }
+
+            // Configurar headers para cache
+            response.setContentType(mimeType);
+            response.setContentLength((int) file.length());
+            response.setHeader("Cache-Control", "public, max-age=86400"); // Cache de 1 dia
+
+            // Servir o arquivo
+            Files.copy(file.toPath(), response.getOutputStream());
+            System.out.println("✅ Imagem servida com sucesso: " + filename);
+
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao servir imagem: " + e.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao carregar imagem");
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

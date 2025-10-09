@@ -3,20 +3,29 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="br.com.bytx.model.Usuario" %>
 <%
-    // Verificar se o usuário está logado
-    if (session == null || session.getAttribute("usuarioLogado") == null) {
-        response.sendRedirect(request.getContextPath() + "/login");
-        return;
+    // Verificar se usuário está logado de forma segura
+    Usuario usuario = null;
+    boolean isAdmin = false;
+    boolean isLoggedIn = false;
+
+    if (session != null) {
+        usuario = (Usuario) session.getAttribute("usuarioLogado");
+        isLoggedIn = usuario != null;
+        isAdmin = isLoggedIn && usuario.isAdministrador();
     }
 
-    Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+    // Verificar se é admin via attribute também (do servlet)
+    Boolean ehAdminAttr = (Boolean) request.getAttribute("ehAdmin");
+    if (ehAdminAttr != null) {
+        isAdmin = ehAdminAttr;
+    }
 %>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${produto.nome} - Sistema BytX</title>
+    <title>${produto.nome} - Loja BytX</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -31,102 +40,117 @@
             color: #333;
         }
 
-        .header {
-            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
-            color: white;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        /* Header condicional - só mostra se estiver logado */
+        <c:if test="<%= !isLoggedIn %>">
+            .header, .sidebar {
+                display: none;
+            }
+            .container {
+                min-height: 100vh;
+            }
+            .main-content {
+                padding: 20px;
+            }
+        </c:if>
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
+        <c:if test="<%= isLoggedIn %>">
+            .header {
+                background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+                color: white;
+                padding: 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
 
-        .logo i {
-            margin-right: 10px;
-        }
+            .logo {
+                font-size: 24px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+            }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-        }
+            .logo i {
+                margin-right: 10px;
+            }
 
-        .user-info img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-            border: 2px solid white;
-        }
+            .user-info {
+                display: flex;
+                align-items: center;
+            }
 
-        .logout-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            margin-left: 15px;
-            cursor: pointer;
-        }
+            .user-info img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                margin-right: 10px;
+                border: 2px solid white;
+            }
 
-        .container {
-            display: flex;
-            min-height: calc(100vh - 70px);
-        }
+            .logout-btn {
+                background: rgba(255, 255, 255, 0.2);
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                border-radius: 4px;
+                margin-left: 15px;
+                cursor: pointer;
+            }
 
-        .sidebar {
-            width: 250px;
-            background: white;
-            padding: 20px 0;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-        }
+            .container {
+                display: flex;
+                min-height: calc(100vh - 70px);
+            }
 
-        .sidebar-menu {
-            list-style: none;
-        }
+            .sidebar {
+                width: 250px;
+                background: white;
+                padding: 20px 0;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            }
 
-        .sidebar-menu li {
-            padding: 15px 20px;
-            border-left: 4px solid transparent;
-            cursor: pointer;
-        }
+            .sidebar-menu {
+                list-style: none;
+            }
 
-        .sidebar-menu li.active {
-            background: #f0f7ff;
-            border-left: 4px solid #3a7bd5;
-            color: #3a7bd5;
-        }
+            .sidebar-menu li {
+                padding: 15px 20px;
+                border-left: 4px solid transparent;
+                cursor: pointer;
+            }
 
-        .sidebar-menu i {
-            margin-right: 10px;
-        }
+            .sidebar-menu li.active {
+                background: #f0f7ff;
+                border-left: 4px solid #3a7bd5;
+                color: #3a7bd5;
+            }
 
-        .main-content {
-            flex: 1;
-            padding: 30px;
-        }
+            .sidebar-menu i {
+                margin-right: 10px;
+            }
 
-        .content-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+            .main-content {
+                flex: 1;
+                padding: 30px;
+            }
 
-        .btn-primary {
-            background: #3a7bd5;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-        }
+            .content-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .btn-primary {
+                background: #3a7bd5;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 4px;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+            }
+        </c:if>
 
         .btn {
             padding: 10px 20px;
@@ -369,9 +393,16 @@
             box-shadow: none;
         }
 
-        .buy-btn:disabled:hover {
-            background: #6c757d;
+        .buy-btn.admin-preview {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .buy-btn.admin-preview:hover {
+            background: #e0a800;
             transform: none;
+            box-shadow: none;
+            cursor: not-allowed;
         }
 
         .product-description {
@@ -424,54 +455,85 @@
             background: #5a6268;
             transform: translateY(-1px);
         }
+
+        /* Mensagem para admin */
+        .admin-message {
+            background: #fff3cd;
+            color: #856404;
+            padding: 12px 16px;
+            border-radius: 6px;
+            border-left: 4px solid #ffc107;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .admin-message i {
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">
-            <i class="fas fa-rocket"></i>
-            <span>Sistema BytX</span>
-        </div>
-        <div class="user-info">
-            <img src="https://ui-avatars.com/api/?name=<%= usuario.getNome() %>&background=3a7bd5&color=fff" alt="User">
-            <span><%= usuario.getNome() %></span>
-            <form action="${pageContext.request.contextPath}/logout" method="get" style="display: inline;">
-                <button type="submit" class="logout-btn">Sair <i class="fas fa-sign-out-alt"></i></button>
-            </form>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="sidebar">
-            <ul class="sidebar-menu">
-                <li><a href="${pageContext.request.contextPath}/admin/dashboard" style="text-decoration: none; color: inherit;"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><i class="fas fa-chart-bar"></i> Relatórios</li>
-                <li class="active"><i class="fas fa-tag"></i> Produtos</li>
-                <li><a href="${pageContext.request.contextPath}/admin/usuarios" style="text-decoration: none; color: inherit;"><i class="fas fa-users"></i> Gerenciar Usuários</a></li>
-                <li><i class="fas fa-cog"></i> Configurações</li>
-            </ul>
+    <c:if test="<%= isLoggedIn %>">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <span>Sistema BytX</span>
+            </div>
+            <div class="user-info">
+                <img src="https://ui-avatars.com/api/?name=<%= usuario.getNome() %>&background=3a7bd5&color=fff" alt="User">
+                <span><%= usuario.getNome() %></span>
+                <form action="${pageContext.request.contextPath}/logout" method="get" style="display: inline;">
+                    <button type="submit" class="logout-btn">Sair <i class="fas fa-sign-out-alt"></i></button>
+                </form>
+            </div>
         </div>
 
-        <div class="main-content">
-            <div class="content-header">
-                <h1>Visualizar Produto</h1>
-                <a href="${pageContext.request.contextPath}/produto/listar" class="btn-primary">
-                    <i class="fas fa-arrow-left"></i> Voltar para Lista
-                </a>
+        <div class="container">
+            <div class="sidebar">
+                <ul class="sidebar-menu">
+                    <li><a href="${pageContext.request.contextPath}/admin/dashboard" style="text-decoration: none; color: inherit;"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><i class="fas fa-chart-bar"></i> Relatórios</li>
+                    <li class="active"><i class="fas fa-tag"></i> Produtos</li>
+                    <li><a href="${pageContext.request.contextPath}/admin/usuarios" style="text-decoration: none; color: inherit;"><i class="fas fa-users"></i> Gerenciar Usuários</a></li>
+                    <li><i class="fas fa-cog"></i> Configurações</li>
+                </ul>
             </div>
 
+            <div class="main-content">
+                <div class="content-header">
+                    <h1>Visualizar Produto</h1>
+                    <a href="${pageContext.request.contextPath}/produto/listar" class="btn-primary">
+                        <i class="fas fa-arrow-left"></i> Voltar para Lista
+                    </a>
+                </div>
+    </c:if>
+
+    <c:if test="<%= !isLoggedIn %>">
+        <div class="container">
+            <div class="main-content">
+    </c:if>
+
             <c:if test="${produto == null}">
-                <div style="background: #f8d7da; color: #721c24; padding: 20px; border-radius: 5px; text-align: center;">
+                <div style="background: #f8d7da; color: #721c24; padding: 20px; border-radius: 5px; text-align: center; margin: 20px;">
                     <i class="fas fa-exclamation-triangle"></i>
                     <h3>Produto não encontrado</h3>
                     <p>O produto solicitado não foi encontrado no sistema.</p>
-                    <a href="${pageContext.request.contextPath}/produto/listar" class="btn btn-cancel">
-                        Voltar para a Lista
+                    <a href="${pageContext.request.contextPath}/" class="btn btn-cancel">
+                        Voltar para a Loja
                     </a>
                 </div>
             </c:if>
 
             <c:if test="${produto != null}">
+                <!-- Mensagem para admin -->
+                <c:if test="<%= isAdmin %>">
+                    <div class="admin-message">
+                        <i class="fas fa-eye"></i>
+                        <strong>Modo de Visualização:</strong> Você está visualizando como o produto aparece para os clientes.
+                        O botão de compra está desativado nesta visualização.
+                    </div>
+                </c:if>
+
                 <div class="product-page">
                     <div class="product-container">
                         <div class="product-layout">
@@ -480,7 +542,7 @@
                                 <div class="main-image-container">
                                     <c:choose>
                                         <c:when test="${not empty imagens}">
-                                            <img id="mainImage" src="${pageContext.request.contextPath}${imagens[0].caminho}/${imagens[0].nomeArquivo}"
+                                            <img id="mainImage" src="${pageContext.request.contextPath}/produto/imagens/${imagens[0].nomeArquivo}"
                                                  alt="${produto.nome}" class="main-image"
                                                  onerror="this.src='https://via.placeholder.com/600x400?text=Imagem+Não+Encontrada'">
                                         </c:when>
@@ -490,20 +552,22 @@
                                         </c:otherwise>
                                     </c:choose>
 
-                                    <div class="carousel-nav">
-                                        <button class="carousel-btn" onclick="previousImage()" id="prevBtn">
-                                            <i class="fas fa-chevron-left"></i>
-                                        </button>
-                                        <button class="carousel-btn" onclick="nextImage()" id="nextBtn">
-                                            <i class="fas fa-chevron-right"></i>
-                                        </button>
-                                    </div>
+                                    <c:if test="${not empty imagens && imagens.size() > 1}">
+                                        <div class="carousel-nav">
+                                            <button class="carousel-btn" onclick="previousImage()" id="prevBtn">
+                                                <i class="fas fa-chevron-left"></i>
+                                            </button>
+                                            <button class="carousel-btn" onclick="nextImage()" id="nextBtn">
+                                                <i class="fas fa-chevron-right"></i>
+                                            </button>
+                                        </div>
+                                    </c:if>
                                 </div>
 
                                 <c:if test="${not empty imagens && imagens.size() > 1}">
                                     <div class="thumbnail-container">
                                         <c:forEach var="imagem" items="${imagens}" varStatus="status">
-                                            <img src="${pageContext.request.contextPath}${imagem.caminho}/${imagem.nomeArquivo}"
+                                            <img src="${pageContext.request.contextPath}/produto/imagens/${imagem.nomeArquivo}"
                                                  alt="Thumbnail ${status.index + 1}"
                                                  class="thumbnail ${status.index == 0 ? 'active' : ''}"
                                                  onclick="changeImage(${status.index})"
@@ -518,9 +582,7 @@
                                 <h1 class="product-title">${produto.nome}</h1>
 
                                 <div class="product-rating">
-                                    <div class="stars" id="ratingStars">
-                                        <!-- As estrelas serão geradas via JavaScript -->
-                                    </div>
+                                    <div class="stars" id="ratingStars"></div>
                                     <span class="rating-text">${produto.avaliacao}/5.0</span>
                                 </div>
 
@@ -545,17 +607,33 @@
 
                                 <!-- BOTÃO DE COMPRA -->
                                 <div class="buy-section">
-                                    <button class="buy-btn" ${produto.quantidadeEstoque <= 0 ? 'disabled' : ''}>
-                                        <i class="fas fa-shopping-cart"></i>
-                                        <c:choose>
-                                            <c:when test="${produto.quantidadeEstoque > 0}">
-                                                COMPRAR AGORA
-                                            </c:when>
-                                            <c:otherwise>
-                                                PRODUTO ESGOTADO
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </button>
+                                    <c:choose>
+                                        <%-- ADMIN: Botão desativado com visual diferente --%>
+                                        <c:when test="<%= isAdmin %>">
+                                            <button class="buy-btn admin-preview" disabled>
+                                                <i class="fas fa-eye"></i> VISUALIZAÇÃO (Compra desativada para admin)
+                                            </button>
+                                        </c:when>
+
+                                        <%-- USUÁRIO LOGADO (não admin) E USUÁRIO NÃO LOGADO: Compra normal --%>
+                                        <c:when test="${produto.quantidadeEstoque > 0}">
+                                            <form action="${pageContext.request.contextPath}/carrinho/adicionar" method="post" style="width: 100%;">
+                                                <input type="hidden" name="produtoId" value="${produto.id}">
+                                                <input type="hidden" name="quantidade" value="1">
+                                                <input type="hidden" name="redirect" value="carrinho">
+                                                <button type="submit" class="buy-btn">
+                                                    <i class="fas fa-shopping-cart"></i> ADICIONAR AO CARRINHO
+                                                </button>
+                                            </form>
+                                        </c:when>
+
+                                        <%-- PRODUTO ESGOTADO --%>
+                                        <c:otherwise>
+                                            <button class="buy-btn" disabled>
+                                                <i class="fas fa-times"></i> PRODUTO ESGOTADO
+                                            </button>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
 
                                 <!-- DESCRIÇÃO DO PRODUTO -->
@@ -578,131 +656,123 @@
                         </div>
                     </div>
 
-                    <!-- BOTÃO VOLTAR (apenas para admin) -->
+                    <!-- BOTÃO VOLTAR -->
                     <div class="back-section">
-                        <a href="${pageContext.request.contextPath}/produto/listar" class="back-btn">
-                            <i class="fas fa-arrow-left"></i> Voltar para Lista de Produtos
-                        </a>
+                        <c:choose>
+                            <c:when test="<%= isLoggedIn && isAdmin %>">
+                                <a href="${pageContext.request.contextPath}/produto/listar" class="back-btn">
+                                    <i class="fas fa-arrow-left"></i> Voltar para Lista de Produtos
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${pageContext.request.contextPath}/" class="back-btn">
+                                    <i class="fas fa-arrow-left"></i> Voltar para a Loja
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </c:if>
-        </div>
-    </div>
 
-    <script>
-        // Sistema de carrossel de imagens
-        let currentImageIndex = 0;
-        const images = [
-            <c:forEach var="imagem" items="${imagens}" varStatus="status">
-            {
-                src: '${pageContext.request.contextPath}${imagem.caminho}/${imagem.nomeArquivo}',
-                alt: '${produto.nome} - Imagem ${status.index + 1}'
-            }<c:if test="${!status.last}">,</c:if>
-            </c:forEach>
-        ];
+            </div> <!-- fecha main-content -->
+        </div> <!-- fecha container -->
+</body>
 
-        function updateCarousel() {
-            const mainImage = document.getElementById('mainImage');
-            const thumbnails = document.querySelectorAll('.thumbnail');
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
+<script>
+    // Sistema de carrossel de imagens
+    let currentImageIndex = 0;
+    const images = [
+        <c:forEach var="imagem" items="${imagens}" varStatus="status">
+        {
+            src: '${pageContext.request.contextPath}/produto/imagens/${imagem.nomeArquivo}',
+            alt: '${produto.nome} - Imagem ${status.index + 1}'
+        }<c:if test="${!status.last}">,</c:if>
+        </c:forEach>
+    ];
 
-            if (images.length > 0) {
-                mainImage.src = images[currentImageIndex].src;
-                mainImage.alt = images[currentImageIndex].alt;
-            }
+    function updateCarousel() {
+        const mainImage = document.getElementById('mainImage');
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
 
-            // Atualizar thumbnails ativos
+        if (images.length > 0 && mainImage) {
+            mainImage.src = images[currentImageIndex].src;
+            mainImage.alt = images[currentImageIndex].alt;
+        }
+
+        if (thumbnails) {
             thumbnails.forEach((thumb, index) => {
                 thumb.classList.toggle('active', index === currentImageIndex);
             });
-
-            // Atualizar botões de navegação
-            if (prevBtn) prevBtn.disabled = currentImageIndex === 0;
-            if (nextBtn) nextBtn.disabled = currentImageIndex === images.length - 1;
         }
 
-        function changeImage(index) {
-            currentImageIndex = index;
+        if (prevBtn) prevBtn.disabled = currentImageIndex === 0;
+        if (nextBtn) nextBtn.disabled = currentImageIndex === images.length - 1;
+    }
+
+    function changeImage(index) {
+        currentImageIndex = index;
+        updateCarousel();
+    }
+
+    function nextImage() {
+        if (currentImageIndex < images.length - 1) {
+            currentImageIndex++;
+            updateCarousel();
+        }
+    }
+
+    function previousImage() {
+        if (currentImageIndex > 0) {
+            currentImageIndex--;
+            updateCarousel();
+        }
+    }
+
+    // Sistema de avaliação por estrelas
+    function renderStars(rating) {
+        const starsContainer = document.getElementById('ratingStars');
+        if (!starsContainer) return;
+
+        starsContainer.innerHTML = '';
+
+        const fullStars = Math.floor(rating);
+        const hasHalfStar = rating % 1 >= 0.5;
+
+        for (let i = 0; i < fullStars; i++) {
+            const star = document.createElement('i');
+            star.className = 'fas fa-star star';
+            starsContainer.appendChild(star);
+        }
+
+        if (hasHalfStar) {
+            const star = document.createElement('i');
+            star.className = 'fas fa-star-half-alt star';
+            starsContainer.appendChild(star);
+        }
+
+        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+        for (let i = 0; i < emptyStars; i++) {
+            const star = document.createElement('i');
+            star.className = 'far fa-star star empty';
+            starsContainer.appendChild(star);
+        }
+    }
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function() {
+        const rating = ${produto.avaliacao != null ? produto.avaliacao : 0};
+        renderStars(rating);
+
+        if (images.length > 0) {
             updateCarousel();
         }
 
-        function nextImage() {
-            if (currentImageIndex < images.length - 1) {
-                currentImageIndex++;
-                updateCarousel();
-            }
-        }
-
-        function previousImage() {
-            if (currentImageIndex > 0) {
-                currentImageIndex--;
-                updateCarousel();
-            }
-        }
-
-        // Sistema de avaliação por estrelas
-        function renderStars(rating) {
-            const starsContainer = document.getElementById('ratingStars');
-            starsContainer.innerHTML = '';
-
-            const fullStars = Math.floor(rating);
-            const hasHalfStar = rating % 1 >= 0.5;
-
-            // Estrelas cheias
-            for (let i = 0; i < fullStars; i++) {
-                const star = document.createElement('i');
-                star.className = 'fas fa-star star';
-                starsContainer.appendChild(star);
-            }
-
-            // Meia estrela
-            if (hasHalfStar) {
-                const star = document.createElement('i');
-                star.className = 'fas fa-star-half-alt star';
-                starsContainer.appendChild(star);
-            }
-
-            // Estrelas vazias
-            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-            for (let i = 0; i < emptyStars; i++) {
-                const star = document.createElement('i');
-                star.className = 'far fa-star star empty';
-                starsContainer.appendChild(star);
-            }
-        }
-
-        // Inicializar
-        document.addEventListener('DOMContentLoaded', function() {
-            // Renderizar estrelas
-            const rating = ${produto.avaliacao != null ? produto.avaliacao : 0};
-            renderStars(rating);
-
-            // Inicializar carrossel se houver imagens
-            if (images.length > 0) {
-                updateCarousel();
-            }
-
-            // Adicionar navegação por teclado
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowLeft') {
-                    previousImage();
-                } else if (e.key === 'ArrowRight') {
-                    nextImage();
-                }
-            });
-
-            // Botão de compra (apenas visual)
-            const buyBtn = document.querySelector('.buy-btn');
-            if (buyBtn) {
-                buyBtn.addEventListener('click', function(e) {
-                    if (!this.disabled) {
-                        e.preventDefault();
-                        alert('Esta é uma visualização administrativa. O botão de compra está desativado.');
-                    }
-                });
-            }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') previousImage();
+            if (e.key === 'ArrowRight') nextImage();
         });
-    </script>
-</body>
+    });
+</script>
 </html>

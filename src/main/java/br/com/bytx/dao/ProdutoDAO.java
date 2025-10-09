@@ -88,24 +88,6 @@ public class ProdutoDAO {
         }
     }
 
-    public List<Produto> listarTodos() {
-        List<Produto> produtos = new ArrayList<>();
-        String SQL = "SELECT * FROM produtos ORDER BY nome";
-
-        try (Connection connection = getConnection();
-             PreparedStatement ps = connection.prepareStatement(SQL);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                produtos.add(mapearProduto(rs));
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Erro ao listar produtos: " + e.getMessage());
-        }
-
-        return produtos;
-    }
 
     public List<Produto> listarAtivos() {
         List<Produto> produtos = new ArrayList<>();
@@ -230,23 +212,6 @@ public class ProdutoDAO {
         return produtos;
     }
 
-    public int contarProdutosAtivos() {
-        String SQL = "SELECT COUNT(*) FROM produtos WHERE ativo = TRUE";
-
-        try (Connection connection = getConnection();
-             PreparedStatement ps = connection.prepareStatement(SQL);
-             ResultSet rs = ps.executeQuery()) {
-
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Erro ao contar produtos ativos: " + e.getMessage());
-        }
-
-        return 0;
-    }
 
     public int contarTotalProdutos() {
         String SQL = "SELECT COUNT(*) FROM produtos";
@@ -266,46 +231,6 @@ public class ProdutoDAO {
         return 0;
     }
 
-    public boolean existeProdutoComNome(String nome) {
-        String SQL = "SELECT COUNT(*) FROM produtos WHERE LOWER(nome) = LOWER(?)";
-
-        try (Connection connection = getConnection();
-             PreparedStatement ps = connection.prepareStatement(SQL)) {
-
-            ps.setString(1, nome);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Erro ao verificar nome do produto: " + e.getMessage());
-        }
-
-        return false;
-    }
-
-    public boolean existeProdutoComNomeEIdDiferente(String nome, Long id) {
-        String SQL = "SELECT COUNT(*) FROM produtos WHERE LOWER(nome) = LOWER(?) AND id != ?";
-
-        try (Connection connection = getConnection();
-             PreparedStatement ps = connection.prepareStatement(SQL)) {
-
-            ps.setString(1, nome);
-            ps.setLong(2, id);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Erro ao verificar nome do produto: " + e.getMessage());
-        }
-
-        return false;
-    }
 
     // MÉTODO MAPEARPRODUTO CORRETO PARA BIGDECIMAL
     private Produto mapearProduto(ResultSet rs) throws SQLException {
@@ -364,47 +289,6 @@ public class ProdutoDAO {
         }
     }
 
-    // Método para buscar produtos com estoque baixo
-    public List<Produto> buscarComEstoqueBaixo(int limite) {
-        List<Produto> produtos = new ArrayList<>();
-        String SQL = "SELECT * FROM produtos WHERE quantidade_estoque <= ? AND ativo = TRUE ORDER BY quantidade_estoque ASC";
-
-        try (Connection connection = getConnection();
-             PreparedStatement ps = connection.prepareStatement(SQL)) {
-
-            ps.setInt(1, limite);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                produtos.add(mapearProduto(rs));
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Erro ao buscar produtos com estoque baixo: " + e.getMessage());
-        }
-
-        return produtos;
-    }
-
-    // Método para atualizar apenas a avaliação
-    public boolean atualizarAvaliacao(Long id, BigDecimal avaliacao) {
-        String SQL = "UPDATE produtos SET avaliacao = ? WHERE id = ?";
-
-        try (Connection connection = getConnection();
-             PreparedStatement ps = connection.prepareStatement(SQL)) {
-
-            ps.setBigDecimal(1, avaliacao);
-            ps.setLong(2, id);
-
-            int linhasAfetadas = ps.executeUpdate();
-            return linhasAfetadas > 0;
-
-        } catch (SQLException e) {
-            System.out.println("Erro ao atualizar avaliação: " + e.getMessage());
-            return false;
-        }
-    }
-
     public Long obterUltimoIdInserido() {
         String sql = "SELECT LAST_INSERT_ID()";
         try (Connection conn = getConnection();
@@ -419,4 +303,6 @@ public class ProdutoDAO {
         }
         return null;
     }
+
+
 }

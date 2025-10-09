@@ -99,6 +99,26 @@
         .rating-star {
             color: #ffc107;
         }
+
+        .btn-outline {
+            background: transparent;
+            color: #3a7bd5;
+            border: 2px solid #3a7bd5;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background: #3a7bd5;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -111,6 +131,36 @@
     <div class="container">
         <div class="sidebar">
             <%-- Menu igual ao listar.jsp --%>
+        </div>
+
+        <!-- Botão de Comprar -->
+        <div class="buy-section" style="margin: 25px 0;">
+            <c:choose>
+                <c:when test="${produto.quantidadeEstoque > 0}">
+                    <form action="${pageContext.request.contextPath}/carrinho/adicionar" method="post" style="display: inline;">
+                        <input type="hidden" name="produtoId" value="${produto.id}">
+                        <input type="hidden" name="quantidade" value="1">
+                        <input type="hidden" name="redirect" value="carrinho">
+                        <button type="submit" class="buy-btn">
+                            <i class="fas fa-shopping-cart"></i> COMPRAR AGORA
+                        </button>
+                    </form>
+
+                    <form action="${pageContext.request.contextPath}/carrinho/adicionar" method="post" style="display: inline; margin-left: 10px;">
+                        <input type="hidden" name="produtoId" value="${produto.id}">
+                        <input type="hidden" name="quantidade" value="1">
+                        <input type="hidden" name="redirect" value="continuar">
+                        <button type="submit" class="btn btn-outline" style="padding: 12px 20px;">
+                            <i class="fas fa-cart-plus"></i> Adicionar ao Carrinho
+                        </button>
+                    </form>
+                </c:when>
+                <c:otherwise>
+                    <button class="buy-btn" disabled style="background: #6c757d;">
+                        <i class="fas fa-times"></i> PRODUTO ESGOTADO
+                    </button>
+                </c:otherwise>
+            </c:choose>
         </div>
 
         <div class="main-content">

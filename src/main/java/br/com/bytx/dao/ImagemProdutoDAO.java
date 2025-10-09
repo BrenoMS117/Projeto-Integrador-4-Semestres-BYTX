@@ -131,6 +131,37 @@ public class ImagemProdutoDAO {
         return null;
     }
 
+    // Buscar imagem por nome do arquivo
+    public ImagemProduto buscarPorNomeArquivo(String nomeArquivo) {
+        String sql = "SELECT ip.*, p.ativo FROM imagens_produto ip " +
+                "INNER JOIN produtos p ON ip.produto_id = p.id " +
+                "WHERE ip.nome_arquivo = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nomeArquivo);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                ImagemProduto imagem = mapearImagem(rs);
+
+                // Carregar o produto completo
+                Produto produto = new Produto();
+                produto.setId(rs.getLong("produto_id"));
+                produto.setAtivo(rs.getBoolean("ativo"));
+                imagem.setProduto(produto);
+
+                return imagem;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar imagem por nome do arquivo: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     // Buscar todas as imagens do produto
     public List<ImagemProduto> buscarPorProdutoId(Long produtoId) {
         List<ImagemProduto> imagens = new ArrayList<>();
