@@ -50,13 +50,14 @@ public class UsuarioDAO {
         }
     }
 
+
     public void inserirDadosIniciais() {
         // GERAR HASH BCrypt VÁLIDO
         String hashAdmin = CriptografiaUtil.criptografarSenha("admin123");
         System.out.println("Hash admin gerado: " + hashAdmin);
 
-        // Inserir grupos
-        String SQLGrupos = "MERGE INTO grupos (id, nome) KEY (nome) VALUES (1, 'ADMIN'), (2, 'ESTOQUISTA')";
+        // Inserir grupos - ADICIONAR CLIENTE
+        String SQLGrupos = "MERGE INTO grupos (id, nome) KEY (nome) VALUES (1, 'ADMIN'), (2, 'ESTOQUISTA'), (3, 'CLIENTE')";
 
         // Inserir usuário admin com hash VÁLIDO
         String SQLAdmin = "MERGE INTO usuarios (id, nome, cpf, email, senha, grupo, ativo) " +
@@ -74,8 +75,43 @@ public class UsuarioDAO {
             System.out.println("Usuário admin inserido com sucesso!");
             System.out.println("Admin: admin@bytX.com / senha: admin123");
 
+            // ⬅️ ADICIONAR CLIENTE PADRÃO
+            criarUsuarioClientePadrao();
+
         } catch (Exception e) {
             System.out.println("Dados já existem ou erro ao inserir: " + e.getMessage());
+            // Mesmo com erro, tenta criar o cliente
+            criarUsuarioClientePadrao();
+        }
+    }
+
+    public void criarUsuarioClientePadrao() {
+        // Verificar se já existe um cliente padrão
+        if (emailExiste("cliente@bytX.com")) {
+            System.out.println("Usuário cliente padrão já existe!");
+            return;
+        }
+
+        try {
+            // Criar usuário cliente padrão
+            Usuario cliente = new Usuario();
+            cliente.setNome("Cliente Teste");
+            cliente.setCpf("12345678909"); // CPF válido
+            cliente.setEmail("cliente@bytX.com");
+            cliente.setSenha("cliente123");
+            cliente.setGrupo("CLIENTE");
+            cliente.setAtivo(true);
+
+            if (inserirUsuario(cliente)) {
+                System.out.println("✅ Usuário cliente padrão criado com sucesso!");
+                System.out.println("📧 Email: cliente@bytX.com");
+                System.out.println("🔑 Senha: cliente123");
+                System.out.println("👤 Grupo: CLIENTE");
+            } else {
+                System.out.println("❌ Erro ao criar usuário cliente padrão!");
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao criar cliente padrão: " + e.getMessage());
         }
     }
 

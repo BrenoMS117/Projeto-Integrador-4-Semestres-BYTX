@@ -83,10 +83,8 @@
             <button type="submit" class="btn-login">Entrar</button>
         </form>
 
-        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 4px; font-size: 14px;">
-            <strong>Credencial padrão:</strong><br>
-            Email: admin@bytX.com<br>
-            Senha: admin123
+        <div style="text-align: center; margin-top: 20px;">
+            <p>Não tem uma conta? <a href="${pageContext.request.contextPath}/cadastro-cliente">Cadastre-se aqui</a></p>
         </div>
     </div>
 </body>

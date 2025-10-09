@@ -69,35 +69,18 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        System.out.println("=== DEBUG INICIADO ===");
-
-        String senhaTeste = "admin123";
-        String hashTeste = CriptografiaUtil.criptografarSenha(senhaTeste);
-        System.out.println("Novo hash gerado: " + hashTeste);
-
-        boolean testeValido = CriptografiaUtil.verificarSenha(senhaTeste, hashTeste);
-        System.out.println("Teste com novo hash: " + testeValido);
-
-        String hashDoBanco = "$2a$12$r4A6aU6wz6q6q6q6q6q6qO6q6q6q6q6q6q6q6q6q6q6q6q6q6q6";
-        boolean bancoValido = CriptografiaUtil.verificarSenha(senhaTeste, hashDoBanco);
-        System.out.println("Teste com hash do banco: " + bancoValido);
-
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
+        String redirect = request.getParameter("redirect");
 
         System.out.println("POST /login - Tentativa: " + email);
+        System.out.println("Redirect: " + redirect);
 
         try {
             Usuario usuario = usuarioDAO.verificarLogin(email, senha);
 
             if (usuario != null) {
-                System.out.println("Usuário encontrado: " + usuario.getEmail());
-
-                if (!usuario.isAdministrador() && !usuario.isEstoquista()) {
-                    request.setAttribute("erro", "Acesso permitido apenas para administradores e estoquistas");
-                    request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
-                    return;
-                }
+                System.out.println("Usuário encontrado: " + usuario.getEmail() + " - Grupo: " + usuario.getGrupo());
 
                 HttpSession session = request.getSession();
                 session.setAttribute("usuarioLogado", usuario);
@@ -105,16 +88,29 @@ public class LoginServlet extends HttpServlet {
 
                 System.out.println("Login bem-sucedido! Redirecionando...");
 
-                // Redirecionar conforme o grupo
-                if (usuario.isAdministrador()) {
+                // ⬅️ CORRIGIDO: Redirecionar conforme o grupo
+                if (redirect != null && !redirect.isEmpty() && !redirect.equals("null")) {
+                    // Se há redirect específico, usar ele
+                    response.sendRedirect(request.getContextPath() + redirect);
+                } else if (usuario.isAdministrador()) {
                     response.sendRedirect(request.getContextPath() + "/admin/dashboard");
-                }else if (usuario.isEstoquista()) {
-                response.sendRedirect(request.getContextPath() + "/estoque/dashboard");
+                } else if (usuario.isEstoquista()) {
+                    response.sendRedirect(request.getContextPath() + "/estoque/dashboard");
+                } else if (usuario.isCliente()) {
+                    // ⬅️ CLIENTE: redireciona para a página principal (loja)
+                    response.sendRedirect(request.getContextPath() + "/");
+                } else {
+                    // Grupo desconhecido - vai para loja
+                    response.sendRedirect(request.getContextPath() + "/");
                 }
 
             } else {
                 System.out.println("Login falhou - usuário não encontrado ou senha inválida");
                 request.setAttribute("erro", "Email ou senha inválidos");
+                request.setAttribute("email", email);
+                if (redirect != null) {
+                    request.setAttribute("redirect", redirect);
+                }
                 request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
             }
 
@@ -122,6 +118,10 @@ public class LoginServlet extends HttpServlet {
             System.out.println("Erro no login: " + e.getMessage());
             e.printStackTrace();
             request.setAttribute("erro", "Erro no sistema: " + e.getMessage());
+            request.setAttribute("email", email);
+            if (redirect != null) {
+                request.setAttribute("redirect", redirect);
+            }
             request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
         }
     }

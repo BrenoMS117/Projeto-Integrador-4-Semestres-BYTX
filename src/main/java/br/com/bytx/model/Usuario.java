@@ -51,6 +51,10 @@ public class Usuario {
         return "ESTOQUISTA".equalsIgnoreCase(this.grupo);
     }
 
+    public boolean isCliente() {
+        return "CLIENTE".equalsIgnoreCase(this.grupo);
+    }
+
     @Override
     public String toString() {
         return "Usuario [id=" + id + ", nome=" + nome + ", email=" + email + ", grupo=" + grupo + ", ativo=" + ativo + "]";

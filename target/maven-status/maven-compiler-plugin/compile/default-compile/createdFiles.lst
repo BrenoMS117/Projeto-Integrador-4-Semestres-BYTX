@@ -3,6 +3,7 @@ br\com\bytx\controller\estoque\VisualizarProdutoEstoqueServlet.class
 br\com\bytx\controller\estoque\EstoqueDashboardServlet.class
 br\com\bytx\model\produto\ImagemProduto.class
 br\com\bytx\controller\produto\VisualizarProdutoServlet.class
+br\com\bytx\controller\clientes\CadastroClienteServlet.class
 br\com\bytx\controller\usuarios\AlterarStatusUsuarioServlet.class
 br\com\bytx\controller\usuarios\LoginServlet.class
 br\com\bytx\model\produto\Produto.class
@@ -13,7 +14,6 @@ br\com\bytx\util\ValidadorCPF.class
 br\com\bytx\controller\produto\EstoqueProdutoServlet.class
 br\com\bytx\filter\AuthFilter.class
 br\com\bytx\controller\produto\GerenciarProdutoServlet.class
-br\com\bytx\controller\usuarios\DebugServlet.class
 br\com\bytx\controller\usuarios\CadastroUsuarioServlet.class
 br\com\bytx\model\carrinho\Carrinho.class
 br\com\bytx\controller\carrinho\RemoverItemServlet.class
@@ -36,3 +36,4 @@ br\com\bytx\controller\usuarios\LogoutServlet.class
 br\com\bytx\controller\usuarios\EditarUsuarioServlet.class
 br\com\bytx\controller\estoque\EditarEstoqueServlet.class
 br\com\bytx\model\carrinho\ItemCarrinho.class
+br\com\bytx\controller\usuarios\TestarClienteServlet.class

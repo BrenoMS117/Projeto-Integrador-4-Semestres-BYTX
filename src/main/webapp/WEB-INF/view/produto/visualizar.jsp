@@ -470,6 +470,27 @@
         .admin-message i {
             margin-right: 8px;
         }
+
+        .btn-outline {
+            background: transparent;
+            color: #3a7bd5;
+            border: 2px solid #3a7bd5;
+            padding: 10px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            background: #3a7bd5;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -577,84 +598,126 @@
                                 </c:if>
                             </div>
 
-                            <!-- SEÇÃO DE INFORMAÇÕES -->
-                            <div class="product-info">
-                                <h1 class="product-title">${produto.nome}</h1>
+                           <!-- SEÇÃO DE INFORMAÇÕES -->
+                           <div class="product-info">
+                               <h1 class="product-title">${produto.nome}</h1>
 
-                                <div class="product-rating">
-                                    <div class="stars" id="ratingStars"></div>
-                                    <span class="rating-text">${produto.avaliacao}/5.0</span>
-                                </div>
+                               <div class="product-rating">
+                                   <div class="stars" id="ratingStars"></div>
+                                   <span class="rating-text">${produto.avaliacao}/5.0</span>
+                               </div>
 
-                                <div class="product-price">
-                                    R$ <fmt:formatNumber value="${produto.preco}" pattern="#,##0.00"/>
-                                </div>
+                               <div class="product-price">
+                                   R$ <fmt:formatNumber value="${produto.preco}" pattern="#,##0.00"/>
+                               </div>
 
-                                <!-- INFORMAÇÃO DE ESTOQUE -->
-                                <div class="stock-info ${produto.quantidadeEstoque <= 0 ? 'out-of-stock' : ''}">
-                                    <i class="fas ${produto.quantidadeEstoque > 0 ? 'fa-check in-stock' : 'fa-times out-of-stock'} stock-icon"></i>
-                                    <span class="stock-text">
-                                        <c:choose>
-                                            <c:when test="${produto.quantidadeEstoque > 0}">
-                                                Em estoque - ${produto.quantidadeEstoque} unidades disponíveis
-                                            </c:when>
-                                            <c:otherwise>
-                                                Produto esgotado
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </span>
-                                </div>
+                               <!-- INFORMAÇÃO DE ESTOQUE -->
+                               <div class="stock-info ${produto.quantidadeEstoque <= 0 ? 'out-of-stock' : ''}">
+                                   <i class="fas ${produto.quantidadeEstoque > 0 ? 'fa-check in-stock' : 'fa-times out-of-stock'} stock-icon"></i>
+                                   <span class="stock-text">
+                                       <c:choose>
+                                           <c:when test="${produto.quantidadeEstoque > 0}">
+                                               Em estoque - ${produto.quantidadeEstoque} unidades disponíveis
+                                           </c:when>
+                                           <c:otherwise>
+                                               Produto esgotado
+                                           </c:otherwise>
+                                       </c:choose>
+                                   </span>
+                               </div>
 
-                                <!-- BOTÃO DE COMPRA -->
-                                <div class="buy-section">
-                                    <c:choose>
-                                        <%-- ADMIN: Botão desativado com visual diferente --%>
-                                        <c:when test="<%= isAdmin %>">
-                                            <button class="buy-btn admin-preview" disabled>
-                                                <i class="fas fa-eye"></i> VISUALIZAÇÃO (Compra desativada para admin)
-                                            </button>
-                                        </c:when>
+                               <!-- BOTÃO DE COMPRA -->
+                               <div class="buy-section">
+                                   <c:choose>
+                                       <%-- ADMIN: Botão desativado com visual diferente --%>
+                                       <c:when test="<%= isAdmin %>">
+                                           <button class="buy-btn admin-preview" disabled>
+                                               <i class="fas fa-eye"></i> VISUALIZAÇÃO (Compra desativada para admin)
+                                           </button>
+                                       </c:when>
 
-                                        <%-- USUÁRIO LOGADO (não admin) E USUÁRIO NÃO LOGADO: Compra normal --%>
-                                        <c:when test="${produto.quantidadeEstoque > 0}">
-                                            <form action="${pageContext.request.contextPath}/carrinho/adicionar" method="post" style="width: 100%;">
-                                                <input type="hidden" name="produtoId" value="${produto.id}">
-                                                <input type="hidden" name="quantidade" value="1">
-                                                <input type="hidden" name="redirect" value="carrinho">
-                                                <button type="submit" class="buy-btn">
-                                                    <i class="fas fa-shopping-cart"></i> ADICIONAR AO CARRINHO
-                                                </button>
-                                            </form>
-                                        </c:when>
+                                       <%-- USUÁRIO LOGADO (não admin): Compra normal --%>
+                                       <c:when test="<%= isLoggedIn && !isAdmin %>">
+                                           <c:choose>
+                                               <c:when test="${produto.quantidadeEstoque > 0}">
+                                                   <form action="${pageContext.request.contextPath}/carrinho/adicionar" method="post" style="width: 100%;">
+                                                       <input type="hidden" name="produtoId" value="${produto.id}">
+                                                       <input type="hidden" name="quantidade" value="1">
+                                                       <input type="hidden" name="redirect" value="carrinho">
+                                                       <button type="submit" class="buy-btn">
+                                                           <i class="fas fa-shopping-cart"></i> ADICIONAR AO CARRINHO
+                                                       </button>
+                                                   </form>
 
-                                        <%-- PRODUTO ESGOTADO --%>
-                                        <c:otherwise>
-                                            <button class="buy-btn" disabled>
-                                                <i class="fas fa-times"></i> PRODUTO ESGOTADO
-                                            </button>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
+                                                   <!-- Botão secundário para continuar comprando -->
+                                                   <div style="margin-top: 10px;">
+                                                       <form action="${pageContext.request.contextPath}/carrinho/adicionar" method="post" style="width: 100%;">
+                                                           <input type="hidden" name="produtoId" value="${produto.id}">
+                                                           <input type="hidden" name="quantidade" value="1">
+                                                           <input type="hidden" name="redirect" value="continuar">
+                                                           <button type="submit" class="btn btn-outline" style="width: 100%; padding: 12px; font-size: 14px;">
+                                                               <i class="fas fa-cart-plus"></i> Adicionar e Continuar Comprando
+                                                           </button>
+                                                       </form>
+                                                   </div>
+                                               </c:when>
+                                               <c:otherwise>
+                                                   <button class="buy-btn" disabled>
+                                                       <i class="fas fa-times"></i> PRODUTO ESGOTADO
+                                                   </button>
+                                               </c:otherwise>
+                                           </c:choose>
+                                       </c:when>
 
-                                <!-- DESCRIÇÃO DO PRODUTO -->
-                                <div class="product-description">
-                                    <h3 class="description-title">
-                                        <i class="fas fa-align-left"></i> Descrição do Produto
-                                    </h3>
-                                    <div class="description-text">
-                                        <c:choose>
-                                            <c:when test="${not empty produto.descricao}">
-                                                ${produto.descricao}
-                                            </c:when>
-                                            <c:otherwise>
-                                                Nenhuma descrição fornecida.
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                       <%-- USUÁRIO NÃO LOGADO: Mostrar opções de login/cadastro --%>
+                                       <c:otherwise>
+                                           <c:choose>
+                                               <c:when test="${produto.quantidadeEstoque > 0}">
+                                                   <!-- ⬇️ AQUI VAI O CÓDIGO NOVO PARA USUÁRIOS NÃO LOGADOS -->
+                                                   <div style="text-align: center;">
+                                                       <p style="margin-bottom: 15px; color: #666; font-size: 14px;">
+                                                           Para comprar, faça login ou cadastre-se
+                                                       </p>
+                                                       <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                                                           <a href="${pageContext.request.contextPath}/login?redirect=/produto/visualizar?id=${produto.id}"
+                                                              class="btn btn-primary" style="flex: 1; min-width: 120px;">
+                                                               <i class="fas fa-sign-in-alt"></i> Fazer Login
+                                                           </a>
+                                                           <a href="${pageContext.request.contextPath}/cadastro-cliente"
+                                                              class="btn btn-outline" style="flex: 1; min-width: 120px;">
+                                                               <i class="fas fa-user-plus"></i> Cadastrar
+                                                           </a>
+                                                       </div>
+                                                   </div>
+                                                   <!-- ⬆️ FIM DO CÓDIGO NOVO -->
+                                               </c:when>
+                                               <c:otherwise>
+                                                   <button class="buy-btn" disabled>
+                                                       <i class="fas fa-times"></i> PRODUTO ESGOTADO
+                                                   </button>
+                                               </c:otherwise>
+                                           </c:choose>
+                                       </c:otherwise>
+                                   </c:choose>
+                               </div>
+
+                               <!-- DESCRIÇÃO DO PRODUTO -->
+                               <div class="product-description">
+                                   <h3 class="description-title">
+                                       <i class="fas fa-align-left"></i> Descrição do Produto
+                                   </h3>
+                                   <div class="description-text">
+                                       <c:choose>
+                                           <c:when test="${not empty produto.descricao}">
+                                               ${produto.descricao}
+                                           </c:when>
+                                           <c:otherwise>
+                                               Nenhuma descrição fornecida.
+                                           </c:otherwise>
+                                       </c:choose>
+                                   </div>
+                               </div>
+                           </div>
 
                     <!-- BOTÃO VOLTAR -->
                     <div class="back-section">

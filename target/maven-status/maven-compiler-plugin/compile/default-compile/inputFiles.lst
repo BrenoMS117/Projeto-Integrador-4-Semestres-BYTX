@@ -14,13 +14,14 @@ C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\produto\Lista
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\produto\StatusProdutoServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\produto\VisualizarProdutoServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\AlterarStatusUsuarioServlet.java
+C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\CadastroClienteServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\CadastroUsuarioServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\DashboardServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\DebugServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\EditarUsuarioServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\ListarUsuariosServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\LoginServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\LogoutServlet.java
+C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\TestarClienteServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\dao\CarrinhoDAO.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\dao\ImagemProdutoDAO.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\dao\ProdutoDAO.java
