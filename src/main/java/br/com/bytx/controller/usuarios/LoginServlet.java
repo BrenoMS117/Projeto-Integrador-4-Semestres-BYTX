@@ -63,6 +63,12 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+        // ⬇️ ADICIONAR: Mostrar mensagem do logout
+        String mensagem = request.getParameter("mensagem");
+        if (mensagem != null) {
+            request.setAttribute("mensagemSucesso", mensagem);
+        }
+
         request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
     }
 

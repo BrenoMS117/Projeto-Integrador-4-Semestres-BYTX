@@ -30,6 +30,7 @@ public class LogoutServlet extends HttpServlet {
             System.out.println("Logout realizado com sucesso");
         }
 
-        response.sendRedirect(request.getContextPath() + "/login");
+        // Redirecionar para login com mensagem de confirmação
+        response.sendRedirect(request.getContextPath() + "/login?mensagem=Você+saiu+da+sessão+com+sucesso!");
     }
 }

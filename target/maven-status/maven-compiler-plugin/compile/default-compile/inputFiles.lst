@@ -1,6 +1,9 @@
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\carrinho\AdicionarItemServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\carrinho\CarrinhoServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\carrinho\RemoverItemServlet.java
+C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\cliente\CadastroClienteServlet.java
+C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\cliente\EnderecosClienteServlet.java
+C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\cliente\PerfilClienteServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\estoque\DashboardEstoqueServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\estoque\EditarEstoqueServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\estoque\EstoqueDashboardServlet.java
@@ -14,7 +17,6 @@ C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\produto\Lista
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\produto\StatusProdutoServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\produto\VisualizarProdutoServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\AlterarStatusUsuarioServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\CadastroClienteServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\CadastroUsuarioServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\DashboardServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\EditarUsuarioServlet.java
@@ -23,6 +25,8 @@ C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\Logi
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\LogoutServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\TestarClienteServlet.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\dao\CarrinhoDAO.java
+C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\dao\ClienteDAO.java
+C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\dao\EnderecoDAO.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\dao\ImagemProdutoDAO.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\dao\ProdutoDAO.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\dao\UsuarioDAO.java
@@ -31,9 +35,12 @@ C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\filter\CharacterEncoding
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\listener\AppInitializer.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\model\carrinho\Carrinho.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\model\carrinho\ItemCarrinho.java
+C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\model\cliente\Cliente.java
+C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\model\cliente\Endereco.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\model\produto\ImagemProduto.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\model\produto\Produto.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\model\Usuario.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\util\ConexaoH2.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\util\CriptografiaUtil.java
+C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\util\ValidadorCliente.java
 C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\util\ValidadorCPF.java

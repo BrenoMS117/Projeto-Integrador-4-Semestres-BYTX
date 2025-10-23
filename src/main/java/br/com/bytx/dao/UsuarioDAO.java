@@ -371,4 +371,52 @@ public class UsuarioDAO {
             return false;
         }
     }
+
+    public void criarTabelaClientes() {
+        String SQL = "CREATE TABLE IF NOT EXISTS clientes (" +
+                "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                "usuario_id INT NOT NULL UNIQUE, " +
+                "data_nascimento DATE, " +
+                "genero VARCHAR(20), " +
+                "telefone VARCHAR(20), " +
+                "data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
+                "FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE" +
+                ")";
+
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL)) {
+            ps.execute();
+            System.out.println("Tabela 'clientes' criada com sucesso!");
+        } catch (Exception e) {
+            System.out.println("Erro ao criar tabela 'clientes': " + e.getMessage());
+        }
+    }
+
+    public void criarTabelaEnderecosClientes() {
+        String SQL = "CREATE TABLE IF NOT EXISTS enderecos_clientes (" +
+                "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                "cliente_id INT NOT NULL, " +
+                "tipo VARCHAR(20) NOT NULL, " +
+                "cep VARCHAR(9) NOT NULL, " + // ⬅️ MUDAR DE 8 PARA 9
+                "logradouro VARCHAR(200) NOT NULL, " +
+                "numero VARCHAR(20) NOT NULL, " +
+                "complemento VARCHAR(100), " +
+                "bairro VARCHAR(100) NOT NULL, " +
+                "cidade VARCHAR(100) NOT NULL, " +
+                "uf VARCHAR(2) NOT NULL, " +
+                "padrao BOOLEAN DEFAULT FALSE, " +
+                "data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
+                "FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE" +
+                ")";
+
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL)) {
+            ps.execute();
+            System.out.println("Tabela 'enderecos_clientes' criada/atualizada com sucesso!");
+        } catch (Exception e) {
+            System.out.println("Erro ao criar tabela 'enderecos_clientes': " + e.getMessage());
+        }
+    }
+
+
 }

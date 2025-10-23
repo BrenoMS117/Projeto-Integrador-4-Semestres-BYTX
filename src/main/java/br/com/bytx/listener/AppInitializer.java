@@ -27,9 +27,10 @@ public class AppInitializer implements ServletContextListener {
         usuarioDAO.criarTabelaUsuario();
         usuarioDAO.criarTabelaGrupos();
 
-        // ⬅️ FORÇAR CRIAÇÃO DO CLIENTE
-        criarClienteForcado(usuarioDAO);
+        usuarioDAO.criarTabelaClientes();
+        usuarioDAO.criarTabelaEnderecosClientes();
 
+        criarClienteForcado(usuarioDAO);
         usuarioDAO.inserirDadosIniciais();
 
         // 2. Tabelas de produtos
@@ -43,6 +44,7 @@ public class AppInitializer implements ServletContextListener {
 
         System.out.println("Configuração inicial concluída!");
         System.out.println("=========================================");
+
     }
 
     // ⬅️ MÉTODO CORRIGIDO - sem problemas de importação

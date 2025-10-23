@@ -669,27 +669,36 @@
                                            </c:choose>
                                        </c:when>
 
-                                       <%-- USUÁRIO NÃO LOGADO: Mostrar opções de login/cadastro --%>
+                                       <%-- USUÁRIO NÃO LOGADO: Pode comprar sem cadastro --%>
                                        <c:otherwise>
                                            <c:choose>
                                                <c:when test="${produto.quantidadeEstoque > 0}">
-                                                   <!-- ⬇️ AQUI VAI O CÓDIGO NOVO PARA USUÁRIOS NÃO LOGADOS -->
-                                                   <div style="text-align: center;">
-                                                       <p style="margin-bottom: 15px; color: #666; font-size: 14px;">
-                                                           Para comprar, faça login ou cadastre-se
-                                                       </p>
-                                                       <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                                                           <a href="${pageContext.request.contextPath}/login?redirect=/produto/visualizar?id=${produto.id}"
-                                                              class="btn btn-primary" style="flex: 1; min-width: 120px;">
-                                                               <i class="fas fa-sign-in-alt"></i> Fazer Login
-                                                           </a>
-                                                           <a href="${pageContext.request.contextPath}/cadastro-cliente"
-                                                              class="btn btn-outline" style="flex: 1; min-width: 120px;">
-                                                               <i class="fas fa-user-plus"></i> Cadastrar
-                                                           </a>
-                                                       </div>
+                                                   <!-- ⬇️ USUÁRIOS NÃO LOGADOS PODEM ADICIONAR AO CARRINHO -->
+                                                   <form action="${pageContext.request.contextPath}/carrinho/adicionar" method="post" style="width: 100%;">
+                                                       <input type="hidden" name="produtoId" value="${produto.id}">
+                                                       <input type="hidden" name="quantidade" value="1">
+                                                       <input type="hidden" name="redirect" value="carrinho">
+                                                       <button type="submit" class="buy-btn">
+                                                           <i class="fas fa-shopping-cart"></i> ADICIONAR AO CARRINHO
+                                                       </button>
+                                                   </form>
+
+                                                   <!-- Botão secundário para continuar comprando -->
+                                                   <div style="margin-top: 10px;">
+                                                       <form action="${pageContext.request.contextPath}/carrinho/adicionar" method="post" style="width: 100%;">
+                                                           <input type="hidden" name="produtoId" value="${produto.id}">
+                                                           <input type="hidden" name="quantidade" value="1">
+                                                           <input type="hidden" name="redirect" value="continuar">
+                                                           <button type="submit" class="btn btn-outline" style="width: 100%; padding: 12px; font-size: 14px;">
+                                                               <i class="fas fa-cart-plus"></i> Adicionar e Continuar Comprando
+                                                           </button>
+                                                       </form>
                                                    </div>
-                                                   <!-- ⬆️ FIM DO CÓDIGO NOVO -->
+
+                                                   <!-- Mensagem informativa -->
+                                                   <p style="text-align: center; margin-top: 10px; color: #28a745; font-size: 12px;">
+                                                       <i class="fas fa-info-circle"></i> Você pode comprar sem fazer login!
+                                                   </p>
                                                </c:when>
                                                <c:otherwise>
                                                    <button class="buy-btn" disabled>

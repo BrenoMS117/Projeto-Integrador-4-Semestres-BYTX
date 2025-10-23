@@ -9,7 +9,6 @@
 %>
 
 <style>
-    /* COLE AQUI O CSS SIMPLES QUE JÁ FUNCIONOU */
     .header {
         background: linear-gradient(135deg, #3a7bd5, #00d2ff);
         color: white;
@@ -40,6 +39,11 @@
         color: white;
         text-decoration: none;
         padding: 8px 16px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+    .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
     }
     .user-section {
         display: flex;
@@ -50,6 +54,12 @@
         color: white;
         text-decoration: none;
         position: relative;
+        padding: 8px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+    .cart-icon:hover {
+        background-color: rgba(255, 255, 255, 0.1);
     }
     .cart-count {
         background: #ff4757;
@@ -60,6 +70,43 @@
         position: absolute;
         top: -8px;
         right: -8px;
+    }
+    .user-menu {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .user-name {
+        color: white;
+        font-weight: 500;
+    }
+    .logout-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+    .logout-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+    .account-btn {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+    .account-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
     }
 </style>
 
@@ -89,11 +136,33 @@
 
             <c:choose>
                 <c:when test="<%= usuario != null %>">
-                    <span><%= usuario.getNome() %></span>
+                    <div class="user-menu">
+                        <span class="user-name">
+                            <i class="fas fa-user"></i> Olá, <%= usuario.getNome() %>
+                        </span>
+
+                        <!-- Botão Minha Conta (só para clientes) -->
+                        <c:if test="<%= usuario.isCliente() %>">
+                            <a href="${pageContext.request.contextPath}/cliente/perfil" class="account-btn">
+                                <i class="fas fa-cog"></i> Minha Conta
+                            </a>
+                        </c:if>
+
+                        <!-- Botão Logout -->
+                        <a href="${pageContext.request.contextPath}/logout"
+                           class="logout-btn"
+                           onclick="return confirm('Tem certeza que deseja sair?')">
+                            <i class="fas fa-sign-out-alt"></i> Sair
+                        </a>
+                    </div>
                 </c:when>
                 <c:otherwise>
+                    <!-- Usuário não logado -->
                     <a href="${pageContext.request.contextPath}/login" class="nav-link">
-                        <i class="fas fa-user"></i> Login
+                        <i class="fas fa-sign-in-alt"></i> Entrar
+                    </a>
+                    <a href="${pageContext.request.contextPath}/cadastro-cliente" class="nav-link">
+                        <i class="fas fa-user-plus"></i> Cadastrar
                     </a>
                 </c:otherwise>
             </c:choose>

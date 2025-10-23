@@ -59,12 +59,26 @@
             border-radius: 4px;
             margin-bottom: 1rem;
         }
+        .success {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
         <h1 style="text-align: center; color: #333;">🔐 Login BytX</h1>
 
+        <!-- ⬇️ ADICIONAR: Mensagem de sucesso (logout) -->
+        <c:if test="${not empty mensagemSucesso}">
+            <div class="success">${mensagemSucesso}</div>
+        </c:if>
+
+        <!-- ⬇️ MANTER: Mensagem de erro -->
         <c:if test="${not empty erro}">
             <div class="error">${erro}</div>
         </c:if>
