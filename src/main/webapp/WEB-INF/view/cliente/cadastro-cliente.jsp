@@ -233,7 +233,6 @@
                     <i class="fas fa-exclamation-triangle"></i> ${erroGeral}
                 </div>
             </c:if>
-
             <form method="post" action="${pageContext.request.contextPath}/cadastro-cliente" id="cadastroForm">
 
                 <!-- Seção 1: Dados Pessoais -->
@@ -290,12 +289,6 @@
                                 <option value="OUTRO" ${param.genero == 'OUTRO' ? 'selected' : ''}>Outro</option>
                                 <option value="PREFIRO_NAO_INFORMAR" ${param.genero == 'PREFIRO_NAO_INFORMAR' ? 'selected' : ''}>Prefiro não informar</option>
                             </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="telefone">Telefone</label>
-                            <input type="text" id="telefone" name="telefone" value="${param.telefone}"
-                                   placeholder="(11) 99999-9999">
                         </div>
                     </div>
                 </div>
@@ -430,22 +423,6 @@
             e.target.value = value;
         });
 
-        document.getElementById('telefone').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 11) value = value.slice(0, 11);
-
-            if (value.length > 10) {
-                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-            } else if (value.length > 6) {
-                value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-            } else if (value.length > 2) {
-                value = value.replace(/(\d{2})(\d{4})/, '($1) $2');
-            } else if (value.length > 0) {
-                value = value.replace(/(\d{2})/, '($1)');
-            }
-            e.target.value = value;
-        });
-
         document.getElementById('cep').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
             if (value.length > 8) value = value.slice(0, 8);
@@ -468,71 +445,82 @@
             }
         });
 
-        // CONSULTA CEP COM API ALTERNATIVA
+        // CONSULTA CEP - NOSSA API
         document.getElementById('cep').addEventListener('blur', function() {
-            const cep = this.value.replace(/\D/g, '');
+            const cepInput = this;
+            const cep = cepInput.value.replace(/\D/g, '');
 
-            if (cep.length !== 8) return;
+            if (cep.length !== 8) {
+                mostrarErroCep('CEP deve conter 8 dígitos');
+                return;
+            }
 
-            this.style.background = '#fff8e1';
+            cepInput.style.background = '#fff8e1';
+            cepInput.disabled = true;
 
-            // Tentar API do OpenCEP (alternativa)
-            const url = `https://opencep.com/v1/${cep}`;
+            // Usar nossa própria API - URL CORRIGIDA
+            const contextPath = '${pageContext.request.contextPath}';
+            const url = contextPath + '/api/cep/' + cep;
 
             fetch(url)
             .then(response => {
-                if (!response.ok) throw new Error('Erro na API');
+                if (!response.ok) {
+                    throw new Error('Erro na consulta: ' + response.status);
+                }
                 return response.json();
             })
             .then(data => {
-                this.style.background = '';
+                cepInput.style.background = '';
+                cepInput.disabled = false;
+
 
                 if (data.erro) {
-                    alert('CEP não encontrado!');
+                    mostrarErroCep('CEP não encontrado');
                     return;
                 }
 
+                // Preencher campos automaticamente
                 document.getElementById('logradouro').value = data.logradouro || '';
                 document.getElementById('bairro').value = data.bairro || '';
                 document.getElementById('cidade').value = data.localidade || '';
                 document.getElementById('uf').value = data.uf || '';
+
+                // Limpar erros
+                limparErroCep();
+
+                // Focar no número
                 document.getElementById('numero').focus();
 
             })
             .catch(error => {
-                this.style.background = '';
-                console.error('Erro:', error);
-
-                // Última tentativa com ViaCEP direto
-                tentarViaCEPDireto(cep);
+                cepInput.style.background = '';
+                cepInput.disabled = false;
+                console.error('❌ Erro completo:', error);
+                mostrarErroCep('Erro ao consultar CEP. Tente novamente.');
             });
         });
 
-        function tentarViaCEPDireto(cep) {
-            // Criar script dinâmico para bypass CORS (JSONP)
-            const script = document.createElement('script');
-            script.src = `https://viacep.com.br/ws/${cep}/json/?callback=meuCallback`;
-            document.head.appendChild(script);
+        function mostrarErroCep(mensagem) {
+            let erroElement = document.getElementById('erro-cep');
+            if (!erroElement) {
+                erroElement = document.createElement('div');
+                erroElement.id = 'erro-cep';
+                erroElement.className = 'error';
+                document.getElementById('cep').parentNode.appendChild(erroElement);
+            }
+            erroElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> CEP inválido`;
 
-            // Remover após uso
-            setTimeout(() => {
-                document.head.removeChild(script);
-            }, 1000);
+            document.getElementById('cep').style.borderColor = '#dc3545';
         }
 
-        // Função de callback para JSONP
-        window.meuCallback = function(data) {
-            if (data.erro) {
-                alert('CEP não encontrado!');
-                return;
+        function limparErroCep() {
+            const erroElement = document.getElementById('erro-cep');
+            if (erroElement) {
+                erroElement.remove();
             }
+            document.getElementById('cep').style.borderColor = '#28a745';
+        }
 
-            document.getElementById('logradouro').value = data.logradouro || '';
-            document.getElementById('bairro').value = data.bairro || '';
-            document.getElementById('cidade').value = data.localidade || '';
-            document.getElementById('uf').value = data.uf || '';
-            document.getElementById('numero').focus();
-        };
 
         // Validação do nome em tempo real
         document.getElementById('nome').addEventListener('blur', function() {

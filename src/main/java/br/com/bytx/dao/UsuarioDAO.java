@@ -378,7 +378,6 @@ public class UsuarioDAO {
                 "usuario_id INT NOT NULL UNIQUE, " +
                 "data_nascimento DATE, " +
                 "genero VARCHAR(20), " +
-                "telefone VARCHAR(20), " +
                 "data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                 "FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE" +
                 ")";

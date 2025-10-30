@@ -36,16 +36,4 @@ public class ValidadorCliente {
         String cepLimpo = cep.replace("-", "").replace(" ", "");
         return cepLimpo.matches("\\d{8}");
     }
-
-    /**
-     * Valida se o telefone tem formato básico
-     */
-    public static boolean validarTelefone(String telefone) {
-        if (telefone == null) {
-            return false;
-        }
-
-        String telefoneLimpo = telefone.replace("(", "").replace(")", "").replace("-", "").replace(" ", "");
-        return telefoneLimpo.matches("\\d{10,11}");
-    }
 }

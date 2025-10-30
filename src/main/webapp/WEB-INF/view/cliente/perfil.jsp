@@ -251,11 +251,7 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="telefone">Telefone</label>
-                        <input type="text" id="telefone" name="telefone" value="${cliente.telefone}"
-                               placeholder="(11) 99999-9999">
-                    </div>
+
 
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save"></i> Salvar Alterações
@@ -347,23 +343,6 @@
     </div>
 
     <script>
-        // Máscara do telefone
-        document.getElementById('telefone').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 11) value = value.slice(0, 11);
-
-            if (value.length > 10) {
-                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-            } else if (value.length > 6) {
-                value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-            } else if (value.length > 2) {
-                value = value.replace(/(\d{2})(\d{4})/, '($1) $2');
-            } else if (value.length > 0) {
-                value = value.replace(/(\d{2})/, '($1)');
-            }
-            e.target.value = value;
-        });
-
         // Validação de senha em tempo real
         document.getElementById('confirmarSenha').addEventListener('input', function() {
             const novaSenha = document.getElementById('novaSenha').value;

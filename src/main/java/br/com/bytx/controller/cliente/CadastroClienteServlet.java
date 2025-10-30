@@ -53,7 +53,6 @@ public class CadastroClienteServlet extends HttpServlet {
         String confirmarSenha = request.getParameter("confirmarSenha");
         String dataNascimentoStr = request.getParameter("dataNascimento");
         String genero = request.getParameter("genero");
-        String telefone = request.getParameter("telefone");
 
         // Dados do endereço de faturamento (obrigatório)
         String cep = request.getParameter("cep");
@@ -133,7 +132,6 @@ public class CadastroClienteServlet extends HttpServlet {
 
             // 9. CRIAR CLIENTE
             Cliente cliente = new Cliente(usuarioCriado, dataNascimento, genero);
-            cliente.setTelefone(telefone);
 
             if (!clienteDAO.inserirCliente(cliente)) {
                 request.setAttribute("erroGeral", "Erro ao criar perfil do cliente.");

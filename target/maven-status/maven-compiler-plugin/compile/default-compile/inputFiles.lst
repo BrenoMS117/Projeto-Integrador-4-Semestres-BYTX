@@ -1,46 +1,49 @@
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\carrinho\AdicionarItemServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\carrinho\CarrinhoServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\carrinho\RemoverItemServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\cliente\CadastroClienteServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\cliente\EnderecosClienteServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\cliente\PerfilClienteServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\estoque\DashboardEstoqueServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\estoque\EditarEstoqueServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\estoque\EstoqueDashboardServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\estoque\ListarProdutosEstoqueServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\estoque\VisualizarProdutoEstoqueServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\IndexServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\produto\EstoqueProdutoServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\produto\GerenciarProdutoServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\produto\ImagemProdutoServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\produto\ListarProdutosServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\produto\StatusProdutoServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\produto\VisualizarProdutoServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\AlterarStatusUsuarioServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\CadastroUsuarioServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\DashboardServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\EditarUsuarioServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\ListarUsuariosServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\LoginServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\LogoutServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\controller\usuarios\TestarClienteServlet.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\dao\CarrinhoDAO.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\dao\ClienteDAO.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\dao\EnderecoDAO.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\dao\ImagemProdutoDAO.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\dao\ProdutoDAO.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\dao\UsuarioDAO.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\filter\AuthFilter.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\filter\CharacterEncodingFilter.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\listener\AppInitializer.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\model\carrinho\Carrinho.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\model\carrinho\ItemCarrinho.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\model\cliente\Cliente.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\model\cliente\Endereco.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\model\produto\ImagemProduto.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\model\produto\Produto.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\model\Usuario.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\util\ConexaoH2.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\util\CriptografiaUtil.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\util\ValidadorCliente.java
-C:\Users\DAHUA\Downloads\BytX\src\main\java\br\com\bytx\util\ValidadorCPF.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\api\CepServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\carrinho\AdicionarItemServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\carrinho\CarrinhoServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\carrinho\RemoverItemServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\cliente\CadastroClienteServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\cliente\EnderecosClienteServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\cliente\PerfilClienteServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\estoque\DashboardEstoqueServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\estoque\EditarEstoqueServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\estoque\EstoqueDashboardServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\estoque\ListarProdutosEstoqueServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\estoque\VisualizarProdutoEstoqueServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\IndexServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\produto\EstoqueProdutoServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\produto\GerenciarProdutoServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\produto\ImagemProdutoServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\produto\ListarProdutosServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\produto\StatusProdutoServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\produto\VisualizarProdutoServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\usuarios\AlterarStatusUsuarioServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\usuarios\CadastroUsuarioServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\usuarios\DashboardServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\usuarios\EditarUsuarioServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\usuarios\ListarUsuariosServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\usuarios\LoginServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\usuarios\LogoutServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\controller\usuarios\TestarClienteServlet.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\dao\CarrinhoDAO.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\dao\ClienteDAO.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\dao\EnderecoDAO.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\dao\ImagemProdutoDAO.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\dao\ProdutoDAO.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\dao\UsuarioDAO.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\filter\AuthFilter.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\filter\CharacterEncodingFilter.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\listener\AppInitializer.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\model\carrinho\Carrinho.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\model\carrinho\ItemCarrinho.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\model\cliente\Cliente.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\model\cliente\Endereco.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\model\produto\ImagemProduto.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\model\produto\Produto.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\model\Usuario.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\service\CepService.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\service\EnderecoViaCep.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\util\ConexaoH2.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\util\CriptografiaUtil.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\util\ValidadorCliente.java
+S:\Estudos Faculdade\4 Semestre\Projeto-Integrador-4-Semestres-BYTX\src\main\java\br\com\bytx\util\ValidadorCPF.java

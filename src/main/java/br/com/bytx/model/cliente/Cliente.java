@@ -14,7 +14,6 @@ public class Cliente {
     private Usuario usuario;
     private LocalDate dataNascimento;
     private String genero;
-    private String telefone;
     private LocalDateTime dataCadastro;
     private List<Endereco> enderecos = new ArrayList<>();
 
@@ -43,9 +42,6 @@ public class Cliente {
 
     public String getGenero() { return genero; }
     public void setGenero(String genero) { this.genero = genero; }
-
-    public String getTelefone() { return telefone; }
-    public void setTelefone(String telefone) { this.telefone = telefone; }
 
     public LocalDateTime getDataCadastro() { return dataCadastro; }
     public void setDataCadastro(LocalDateTime dataCadastro) { this.dataCadastro = dataCadastro; }

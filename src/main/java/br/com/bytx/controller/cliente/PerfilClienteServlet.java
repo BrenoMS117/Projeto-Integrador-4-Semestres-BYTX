@@ -79,7 +79,6 @@ public class PerfilClienteServlet extends HttpServlet {
         String nome = request.getParameter("nome");
         String dataNascimentoStr = request.getParameter("dataNascimento");
         String genero = request.getParameter("genero");
-        String telefone = request.getParameter("telefone");
 
         try {
             // Validar nome
@@ -120,7 +119,6 @@ public class PerfilClienteServlet extends HttpServlet {
             // Atualizar cliente
             cliente.setDataNascimento(dataNascimento);
             cliente.setGenero(genero);
-            cliente.setTelefone(telefone);
 
             if (!clienteDAO.atualizarCliente(cliente)) {
                 request.setAttribute("erro", "Erro ao atualizar dados pessoais");

@@ -17,7 +17,7 @@ public class ClienteDAO {
 
     // Inserir cliente
     public boolean inserirCliente(Cliente cliente) {
-        String SQL = "INSERT INTO clientes (usuario_id, data_nascimento, genero, telefone) VALUES (?, ?, ?, ?)";
+        String SQL = "INSERT INTO clientes (usuario_id, data_nascimento, genero) VALUES (?, ?, ?)";
 
         try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -31,7 +31,6 @@ public class ClienteDAO {
             }
 
             ps.setString(3, cliente.getGenero());
-            ps.setString(4, cliente.getTelefone());
 
             int result = ps.executeUpdate();
 
@@ -99,7 +98,7 @@ public class ClienteDAO {
 
     // Atualizar dados do cliente
     public boolean atualizarCliente(Cliente cliente) {
-        String SQL = "UPDATE clientes SET data_nascimento = ?, genero = ?, telefone = ? WHERE id = ?";
+        String SQL = "UPDATE clientes SET data_nascimento = ?, genero = ? WHERE id = ?";
 
         try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -111,8 +110,7 @@ public class ClienteDAO {
             }
 
             ps.setString(2, cliente.getGenero());
-            ps.setString(3, cliente.getTelefone());
-            ps.setLong(4, cliente.getId());
+            ps.setLong(3, cliente.getId());
 
             int result = ps.executeUpdate();
             return result > 0;
@@ -167,7 +165,6 @@ public class ClienteDAO {
         }
 
         cliente.setGenero(rs.getString("genero"));
-        cliente.setTelefone(rs.getString("telefone"));
 
         // Carregar endereços
         carregarEnderecos(cliente);
