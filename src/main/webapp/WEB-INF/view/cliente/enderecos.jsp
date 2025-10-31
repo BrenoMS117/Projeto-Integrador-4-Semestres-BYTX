@@ -456,27 +456,95 @@
             e.target.value = value;
         });
 
-        // Consulta CEP via API
-        document.getElementById('cep').addEventListener('blur', function() {
-            const cep = this.value.replace(/\D/g, '');
+      // Funções para mensagens de erro do CEP
+      function mostrarErroCep(mensagem) {
+          // Criar ou atualizar mensagem de erro
+          let erroElement = document.getElementById('erro-cep');
+          if (!erroElement) {
+              erroElement = document.createElement('div');
+              erroElement.id = 'erro-cep';
+              erroElement.className = 'alert alert-error';
+              erroElement.style.marginTop = '10px';
+              document.getElementById('cep').parentNode.appendChild(erroElement);
+          }
+          erroElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${mensagem}`;
 
-            if (cep.length === 8) {
-                fetch(`https://viacep.com.br/ws/${cep}/json/`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (!data.erro) {
-                            document.getElementById('logradouro').value = data.logradouro || '';
-                            document.getElementById('bairro').value = data.bairro || '';
-                            document.getElementById('cidade').value = data.localidade || '';
-                            document.getElementById('uf').value = data.uf || '';
-                        }
-                    })
-                    .catch(error => {
-                        console.log('Erro ao consultar CEP:', error);
-                    });
-            }
-        });
+          document.getElementById('cep').style.borderColor = '#dc3545';
+      }
 
+      function limparErroCep() {
+          const erroElement = document.getElementById('erro-cep');
+          if (erroElement) {
+              erroElement.remove();
+          }
+          document.getElementById('cep').style.borderColor = '#e1e5e9';
+      }
+
+      document.getElementById('cep').addEventListener('blur', function() {
+          const cepInput = this;
+          const cep = cepInput.value.replace(/\D/g, '');
+
+          console.log("CEP digitado:", cepInput.value);
+          console.log("CEP limpo:", cep);
+
+          if (cep.length !== 8) {
+              if (cep.length > 0) {
+                  mostrarErroCep('CEP inválido');
+              }
+              return;
+          }
+
+          cepInput.style.background = '#fff8e1';
+          cepInput.disabled = true;
+          limparErroCep();
+
+          const url = '/api/cep/' + cep;
+
+          fetch(url)
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Erro na consulta');
+              }
+              return response.json();
+          })
+          .then(data => {
+              cepInput.style.background = '';
+              cepInput.disabled = false;
+
+              if (data.erro) {
+                  mostrarErroCep('CEP inválido');
+                  return;
+              }
+
+              // Preencher campos automaticamente
+              document.getElementById('logradouro').value = data.logradouro || '';
+              document.getElementById('bairro').value = data.bairro || '';
+              document.getElementById('cidade').value = data.localidade || '';
+              document.getElementById('uf').value = data.uf || '';
+
+              // Limpar erros
+              limparErroCep();
+
+              // Focar no número
+              document.getElementById('numero').focus();
+
+          })
+          .catch(error => {
+              cepInput.style.background = '';
+              cepInput.disabled = false;
+              console.error('Erro:', error);
+              mostrarErroCep('Erro ao consultar CEP');
+          });
+      });
+
+      // Limpar erro quando usuário começar a digitar
+      document.getElementById('cep').addEventListener('input', function() {
+          const cep = this.value.replace(/\D/g, '');
+          if (cep.length > 0) {
+              limparErroCep();
+              this.style.borderColor = '#e1e5e9';
+          }
+      });
         // Auto-completar UF em maiúsculas
         document.getElementById('uf').addEventListener('input', function(e) {
             this.value = this.value.toUpperCase();
