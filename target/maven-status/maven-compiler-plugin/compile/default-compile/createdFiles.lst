@@ -1,6 +1,7 @@
 br\com\bytx\controller\estoque\VisualizarProdutoEstoqueServlet.class
 br\com\bytx\controller\estoque\EstoqueDashboardServlet.class
 br\com\bytx\controller\produto\VisualizarProdutoServlet.class
+br\com\bytx\controller\pedido\RevisaoCheckoutServlet.class
 br\com\bytx\controller\api\CepServlet.class
 br\com\bytx\util\ValidadorCPF.class
 br\com\bytx\controller\produto\EstoqueProdutoServlet.class
@@ -12,9 +13,13 @@ br\com\bytx\controller\cliente\CadastroClienteServlet.class
 br\com\bytx\dao\UsuarioDAO.class
 br\com\bytx\util\ValidadorCliente.class
 br\com\bytx\filter\CharacterEncodingFilter.class
+br\com\bytx\controller\pedido\MeusPedidosServlet.class
 br\com\bytx\dao\ImagemProdutoDAO.class
+br\com\bytx\controller\pedido\IniciarCheckoutServlet.class
 br\com\bytx\dao\EnderecoDAO.class
 br\com\bytx\controller\usuarios\ListarUsuariosServlet.class
+br\com\bytx\controller\pedido\FinalizarPedidoServlet.class
+br\com\bytx\controller\pedido\PagamentoCheckoutServlet.class
 br\com\bytx\controller\IndexServlet.class
 br\com\bytx\controller\produto\StatusProdutoServlet.class
 br\com\bytx\controller\usuarios\LogoutServlet.class
@@ -22,8 +27,10 @@ br\com\bytx\controller\cliente\PerfilClienteServlet.class
 br\com\bytx\controller\estoque\EditarEstoqueServlet.class
 br\com\bytx\controller\estoque\DashboardEstoqueServlet.class
 br\com\bytx\service\EnderecoViaCep.class
+br\com\bytx\model\pedido\Pedido.class
 br\com\bytx\dao\ClienteDAO.class
 br\com\bytx\model\produto\ImagemProduto.class
+br\com\bytx\controller\pedido\EnderecoCheckoutServlet.class
 br\com\bytx\controller\usuarios\AlterarStatusUsuarioServlet.class
 br\com\bytx\controller\usuarios\LoginServlet.class
 br\com\bytx\model\produto\Produto.class
@@ -36,7 +43,9 @@ br\com\bytx\model\carrinho\Carrinho.class
 br\com\bytx\controller\carrinho\CarrinhoServlet.class
 br\com\bytx\dao\ProdutoDAO.class
 br\com\bytx\controller\produto\ListarProdutosServlet.class
+br\com\bytx\dao\PedidoDAO.class
 br\com\bytx\controller\usuarios\DashboardServlet.class
+br\com\bytx\controller\pedido\ConfirmacaoPedidoServlet.class
 br\com\bytx\service\CepService.class
 br\com\bytx\util\CriptografiaUtil.class
 br\com\bytx\model\cliente\Endereco.class
@@ -44,6 +53,7 @@ br\com\bytx\model\Usuario.class
 br\com\bytx\controller\produto\ImagemProdutoServlet.class
 br\com\bytx\listener\AppInitializer.class
 br\com\bytx\util\ConexaoH2.class
+br\com\bytx\model\pedido\ItemPedido.class
 br\com\bytx\controller\usuarios\EditarUsuarioServlet.class
 br\com\bytx\model\carrinho\ItemCarrinho.class
 br\com\bytx\controller\usuarios\TestarClienteServlet.class
