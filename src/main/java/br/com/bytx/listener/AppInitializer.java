@@ -1,5 +1,6 @@
 package br.com.bytx.listener;
 
+import br.com.bytx.dao.PedidoDAO;
 import br.com.bytx.dao.UsuarioDAO;
 import br.com.bytx.dao.ProdutoDAO;
 import br.com.bytx.dao.ImagemProdutoDAO;
@@ -41,6 +42,9 @@ public class AppInitializer implements ServletContextListener {
         // 3. Tabelas de imagens
         ImagemProdutoDAO imagemDAO = new ImagemProdutoDAO();
         imagemDAO.criarTabelaImagensProduto();
+
+        PedidoDAO pedidoDAO = new PedidoDAO();
+        pedidoDAO.criarTabelasPedido();
 
         System.out.println("Configuração inicial concluída!");
         System.out.println("=========================================");

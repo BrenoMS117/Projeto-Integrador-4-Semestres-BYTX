@@ -109,7 +109,6 @@
         background: rgba(255, 255, 255, 0.2);
     }
 </style>
-
 <header class="header">
     <div class="header-container">
         <a href="${pageContext.request.contextPath}/" class="logo">
@@ -124,6 +123,13 @@
             <a href="${pageContext.request.contextPath}/" class="nav-link">
                 <i class="fas fa-store"></i> Loja
             </a>
+
+            <!-- ⬇️ MOVER "MEUS PEDIDOS" PARA AQUI -->
+            <c:if test="<%= usuario != null && usuario.isCliente() %>">
+                <a href="${pageContext.request.contextPath}/checkout/meus-pedidos" class="nav-link">
+                    <i class="fas fa-clipboard-list"></i> Meus Pedidos
+                </a>
+            </c:if>
         </nav>
 
         <div class="user-section">
@@ -147,6 +153,8 @@
                                 <i class="fas fa-cog"></i> Minha Conta
                             </a>
                         </c:if>
+
+                        <!-- REMOVER "MEUS PEDIDOS" DAQUI -->
 
                         <!-- Botão Logout -->
                         <a href="${pageContext.request.contextPath}/logout"

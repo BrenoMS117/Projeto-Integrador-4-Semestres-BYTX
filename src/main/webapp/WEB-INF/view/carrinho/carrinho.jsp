@@ -512,7 +512,7 @@
                                 </span>
                             </div>
 
-                            <a href="#" class="btn btn-success" style="margin-top: 20px; width: 100%;">
+                            <a href="${pageContext.request.contextPath}/checkout/iniciar" class="btn btn-success" style="margin-top: 20px; width: 100%;">
                                 <i class="fas fa-lock"></i> Finalizar Compra
                             </a>
                         </div>
