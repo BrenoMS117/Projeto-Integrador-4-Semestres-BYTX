@@ -396,7 +396,7 @@ public class UsuarioDAO {
                 "id INT AUTO_INCREMENT PRIMARY KEY, " +
                 "cliente_id INT NOT NULL, " +
                 "tipo VARCHAR(20) NOT NULL, " +
-                "cep VARCHAR(9) NOT NULL, " + // ⬅️ MUDAR DE 8 PARA 9
+                "cep VARCHAR(9) NOT NULL, " +
                 "logradouro VARCHAR(200) NOT NULL, " +
                 "numero VARCHAR(20) NOT NULL, " +
                 "complemento VARCHAR(100), " +
@@ -404,6 +404,7 @@ public class UsuarioDAO {
                 "cidade VARCHAR(100) NOT NULL, " +
                 "uf VARCHAR(2) NOT NULL, " +
                 "padrao BOOLEAN DEFAULT FALSE, " +
+                "ativado BOOLEAN DEFAULT TRUE, " +
                 "data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                 "FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE" +
                 ")";

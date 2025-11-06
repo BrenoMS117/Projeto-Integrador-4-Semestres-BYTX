@@ -68,6 +68,10 @@ public class EnderecosClienteServlet extends HttpServlet {
             definirEnderecoPadrao(request, response, usuarioLogado);
         } else if ("remover".equals(acao)) {
             removerEndereco(request, response, usuarioLogado);
+        } else if ("ativar".equals(acao)) {
+            ativarEndereco(request, response, usuarioLogado);
+        } else if ("desativar".equals(acao)) {
+            desativarEndereco(request, response, usuarioLogado);
         } else {
             response.sendRedirect(request.getContextPath() + "/cliente/enderecos");
         }
@@ -154,6 +158,12 @@ public class EnderecosClienteServlet extends HttpServlet {
             Endereco endereco = enderecoDAO.buscarPorId(enderecoId);
             if (endereco == null || !endereco.getClienteId().equals(cliente.getId())) {
                 request.setAttribute("erro", "Endereço não encontrado");
+                doGet(request, response);
+                return;
+            }
+
+            if (!endereco.isAtivado()) {
+                request.setAttribute("erro", "Não é possível definir um endereço desativado como padrão");
                 doGet(request, response);
                 return;
             }
@@ -279,4 +289,117 @@ public class EnderecosClienteServlet extends HttpServlet {
 
         return valido;
     }
+
+    private void ativarEndereco(HttpServletRequest request, HttpServletResponse response, Usuario usuarioLogado)
+            throws ServletException, IOException {
+
+        String enderecoIdStr = request.getParameter("enderecoId");
+
+        try {
+            Long enderecoId = Long.parseLong(enderecoIdStr);
+
+            // Buscar cliente
+            Cliente cliente = clienteDAO.buscarPorUsuarioId(usuarioLogado.getId());
+            if (cliente == null) {
+                request.setAttribute("erro", "Cliente não encontrado");
+                doGet(request, response);
+                return;
+            }
+
+            // Verificar se endereço pertence ao cliente
+            Endereco endereco = enderecoDAO.buscarPorId(enderecoId);
+            if (endereco == null || !endereco.getClienteId().equals(cliente.getId())) {
+                request.setAttribute("erro", "Endereço não encontrado");
+                doGet(request, response);
+                return;
+            }
+
+            // Ativar endereço
+            if (!enderecoDAO.ativarEndereco(enderecoId)) {
+                request.setAttribute("erro", "Erro ao ativar endereço");
+                doGet(request, response);
+                return;
+            }
+
+            request.setAttribute("sucesso", "Endereço ativado com sucesso!");
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("erro", "ID do endereço inválido");
+        } catch (Exception e) {
+            System.out.println("Erro ao ativar endereço: " + e.getMessage());
+            request.setAttribute("erro", "Erro interno: " + e.getMessage());
+        }
+
+        doGet(request, response);
+    }
+
+    private void desativarEndereco(HttpServletRequest request, HttpServletResponse response, Usuario usuarioLogado)
+            throws ServletException, IOException {
+
+        String enderecoIdStr = request.getParameter("enderecoId");
+
+        try {
+            Long enderecoId = Long.parseLong(enderecoIdStr);
+
+            // Buscar cliente
+            Cliente cliente = clienteDAO.buscarPorUsuarioId(usuarioLogado.getId());
+            if (cliente == null) {
+                request.setAttribute("erro", "Cliente não encontrado");
+                doGet(request, response);
+                return;
+            }
+
+
+            // Verificar se endereço pertence ao cliente
+            Endereco endereco = enderecoDAO.buscarPorId(enderecoId);
+            if (endereco == null || !endereco.getClienteId().equals(cliente.getId())) {
+                request.setAttribute("erro", "Endereço não encontrado");
+                doGet(request, response);
+                return;
+            }
+
+            // Não permitir desativar endereço padrão
+            if (endereco.isPadrao()) {
+                request.setAttribute("erro", "Não é possível desativar o endereço padrão");
+                doGet(request, response);
+                return;
+            }
+
+            // Não permitir desativar se for o único endereço ativo de entrega
+            List<Endereco> enderecos = cliente.getEnderecos();
+            long totalEnderecosAtivosEntrega = 0;
+
+            if (enderecos != null) {
+                totalEnderecosAtivosEntrega = enderecos.stream()
+                        .filter(e -> e != null &&
+                                "ENTREGA".equals(e.getTipo()) &&
+                                e.isAtivado())
+                        .count();
+            }
+
+            if (totalEnderecosAtivosEntrega <= 1 && "ENTREGA".equals(endereco.getTipo()) && endereco.isAtivado()) {
+                request.setAttribute("erro", "Não é possível desativar o único endereço de entrega ativo");
+                doGet(request, response);
+                return;
+            }
+
+            // Desativar endereço
+            if (!enderecoDAO.desativarEndereco(enderecoId)) {
+                request.setAttribute("erro", "Erro ao desativar endereço");
+                doGet(request, response);
+                return;
+            }
+
+            request.setAttribute("sucesso", "Endereço desativado com sucesso!");
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("erro", "ID do endereço inválido");
+        } catch (Exception e) {
+            System.out.println("Erro ao desativar endereço: " + e.getMessage());
+            request.setAttribute("erro", "Erro interno: " + e.getMessage());
+        }
+
+        doGet(request, response);
+    }
+
 }

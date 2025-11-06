@@ -14,6 +14,7 @@ public class Endereco {
     private String cidade;
     private String uf;
     private boolean padrao;
+    private boolean ativado;
     private LocalDateTime dataCriacao;
 
     // Construtores
@@ -28,7 +29,8 @@ public class Endereco {
         this.bairro = bairro;
         this.cidade = cidade;
         this.uf = uf;
-        this.padrao = true;
+        this.padrao = false;
+        this.ativado = true;
         this.dataCriacao = LocalDateTime.now();
     }
 
@@ -70,6 +72,9 @@ public class Endereco {
 
     public boolean isPadrao() { return padrao; }
     public void setPadrao(boolean padrao) { this.padrao = padrao; }
+
+    public boolean isAtivado() { return ativado; }
+    public void setAtivado(boolean ativado) { this.ativado = ativado; }
 
     public LocalDateTime getDataCriacao() { return dataCriacao; }
     public void setDataCriacao(LocalDateTime dataCriacao) { this.dataCriacao = dataCriacao; }

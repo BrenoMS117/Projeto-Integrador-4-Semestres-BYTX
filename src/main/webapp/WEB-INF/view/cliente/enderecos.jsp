@@ -247,6 +247,27 @@
             color: #ddd;
             margin-bottom: 15px;
         }
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+            border: none;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+            color: #212529;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -387,7 +408,13 @@
                                     </div>
 
                                     <div class="address-content">
-                                        <strong>${endereco.logradouro}, ${endereco.numero}</strong><br>
+                                        <strong>${endereco.logradouro}, ${endereco.numero}</strong>
+                                        <c:if test="${not endereco.ativado}">
+                                            <span style="color: #dc3545; margin-left: 10px; font-size: 12px;">
+                                                <i class="fas fa-ban"></i> Desativado
+                                            </span>
+                                        </c:if>
+                                        <br>
                                         <c:if test="${not empty endereco.complemento}">
                                             ${endereco.complemento}<br>
                                         </c:if>
@@ -407,16 +434,30 @@
                                             </form>
                                         </c:if>
 
+                                        <!-- BOTÕES ATIVAR/DESATIVAR -->
                                         <c:if test="${endereco.tipo == 'ENTREGA' && cliente.enderecos.size() > 1}">
-                                            <form method="post" action="${pageContext.request.contextPath}/cliente/enderecos"
-                                                  onsubmit="return confirm('Tem certeza que deseja remover este endereço?');"
-                                                  style="display: inline;">
-                                                <input type="hidden" name="acao" value="remover">
-                                                <input type="hidden" name="enderecoId" value="${endereco.id}">
-                                                <button type="submit" class="btn btn-danger btn-sm">
-                                                    <i class="fas fa-trash"></i> Remover
-                                                </button>
-                                            </form>
+                                            <c:choose>
+                                                <c:when test="${endereco.ativado}">
+                                                    <form method="post" action="${pageContext.request.contextPath}/cliente/enderecos"
+                                                          onsubmit="return confirm('Tem certeza que deseja desativar este endereço?');"
+                                                          style="display: inline;">
+                                                        <input type="hidden" name="acao" value="desativar">
+                                                        <input type="hidden" name="enderecoId" value="${endereco.id}">
+                                                        <button type="submit" class="btn btn-warning btn-sm">
+                                                            <i class="fas fa-pause"></i> Desativar
+                                                        </button>
+                                                    </form>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <form method="post" action="${pageContext.request.contextPath}/cliente/enderecos" style="display: inline;">
+                                                        <input type="hidden" name="acao" value="ativar">
+                                                        <input type="hidden" name="enderecoId" value="${endereco.id}">
+                                                        <button type="submit" class="btn btn-success btn-sm">
+                                                            <i class="fas fa-play"></i> Ativar
+                                                        </button>
+                                                    </form>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:if>
                                     </div>
                                 </div>

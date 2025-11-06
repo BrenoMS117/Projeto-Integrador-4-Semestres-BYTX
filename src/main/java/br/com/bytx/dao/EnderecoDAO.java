@@ -14,14 +14,14 @@ public class EnderecoDAO {
 
     // Inserir endereço
     public boolean inserirEndereco(Endereco endereco) {
-        String SQL = "INSERT INTO enderecos_clientes (cliente_id, tipo, cep, logradouro, numero, complemento, bairro, cidade, uf, padrao) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String SQL = "INSERT INTO enderecos_clientes (cliente_id, tipo, cep, logradouro, numero, complemento, bairro, cidade, uf, padrao, ativado) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setLong(1, endereco.getClienteId());
-            ps.setString(2, endereco.getTipo());
+            ps.setString(2,     endereco.getTipo());
             ps.setString(3, endereco.getCep());
             ps.setString(4, endereco.getLogradouro());
             ps.setString(5, endereco.getNumero());
@@ -30,6 +30,7 @@ public class EnderecoDAO {
             ps.setString(8, endereco.getCidade());
             ps.setString(9, endereco.getUf());
             ps.setBoolean(10, endereco.isPadrao());
+            ps.setBoolean(11, endereco.isAtivado());
 
             int result = ps.executeUpdate();
 
@@ -107,7 +108,8 @@ public class EnderecoDAO {
             ps.setString(7, endereco.getCidade());
             ps.setString(8, endereco.getUf());
             ps.setBoolean(9, endereco.isPadrao());
-            ps.setLong(10, endereco.getId());
+            ps.setBoolean(10, endereco.isAtivado());
+            ps.setLong(11, endereco.getId());
 
             int result = ps.executeUpdate();
             return result > 0;
@@ -214,6 +216,7 @@ public class EnderecoDAO {
         endereco.setCidade(rs.getString("cidade"));
         endereco.setUf(rs.getString("uf"));
         endereco.setPadrao(rs.getBoolean("padrao"));
+        endereco.setAtivado(rs.getBoolean("ativado"));
 
         Timestamp dataCriacao = rs.getTimestamp("data_criacao");
         if (dataCriacao != null) {
@@ -221,5 +224,58 @@ public class EnderecoDAO {
         }
 
         return endereco;
+    }
+
+    // Ativar endereço
+    public boolean ativarEndereco(Long enderecoId) {
+        String SQL = "UPDATE enderecos_clientes SET ativado = TRUE WHERE id = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL)) {
+
+            ps.setLong(1, enderecoId);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao ativar endereço: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Desativar endereço
+    public boolean desativarEndereco(Long enderecoId) {
+        String SQL = "UPDATE enderecos_clientes SET ativado = FALSE WHERE id = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL)) {
+
+            ps.setLong(1, enderecoId);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao desativar endereço: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Buscar apenas endereços ativos
+    public List<Endereco> buscarAtivosPorClienteId(Long clienteId) {
+        List<Endereco> enderecos = new ArrayList<>();
+        String SQL = "SELECT * FROM enderecos_clientes WHERE cliente_id = ? AND ativado = TRUE ORDER BY padrao DESC, data_criacao DESC";
+
+        try (Connection connection = getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL)) {
+
+            ps.setLong(1, clienteId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                enderecos.add(mapearEndereco(rs));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar endereços ativos: " + e.getMessage());
+        }
+        return enderecos;
     }
 }
