@@ -103,15 +103,15 @@ public class EnderecosClienteServlet extends HttpServlet {
                 doGet(request, response);
                 return;
             }
+
+            // CORREÇÃO: Buscar endereços diretamente do DAO
             if (padrao) {
-                List<Endereco> enderecos = cliente.getEnderecos();
-                if (enderecos != null) {
-                    for (Endereco enderecoExistente : enderecos) {
-                        if (enderecoExistente != null &&
-                                enderecoExistente.isPadrao() &&
-                                "ENTREGA".equals(enderecoExistente.getTipo())) {
-                            enderecoExistente.setPadrao(false);
-                            enderecoDAO.atualizarEndereco(enderecoExistente);
+                List<Endereco> enderecos = enderecoDAO.buscarPorClienteId(cliente.getId()); // ← Busca direto do banco
+                for (Endereco enderecoExistente : enderecos) {
+                    if (enderecoExistente.isPadrao() && "ENTREGA".equals(enderecoExistente.getTipo())) {
+                        enderecoExistente.setPadrao(false);
+                        if (!enderecoDAO.atualizarEndereco(enderecoExistente)) {
+                            System.out.println("❌ Erro ao remover padrão do endereço: " + enderecoExistente.getId());
                         }
                     }
                 }
@@ -122,15 +122,20 @@ public class EnderecosClienteServlet extends HttpServlet {
             novoEndereco.setComplemento(complemento);
             novoEndereco.setClienteId(cliente.getId());
             novoEndereco.setPadrao(padrao);
+            novoEndereco.setAtivado(true); // ← IMPORTANTE: Garantir que está ativado
+
+            System.out.println("📝 Tentando inserir endereço: " + novoEndereco.toString());
 
             if (enderecoDAO.inserirEndereco(novoEndereco)) {
                 request.setAttribute("sucesso", "Endereço adicionado com sucesso!");
+                System.out.println("✅ Endereço inserido com sucesso!");
             } else {
                 request.setAttribute("erro", "Erro ao salvar endereço no banco de dados");
+                System.out.println("❌ Falha ao inserir endereço no banco");
             }
 
         } catch (Exception e) {
-            System.out.println("Erro ao adicionar endereço: " + e.getMessage());
+            System.out.println("❌ ERRO CRÍTICO ao adicionar endereço: " + e.getMessage());
             e.printStackTrace();
             request.setAttribute("erro", "Erro interno: " + e.getMessage());
         }

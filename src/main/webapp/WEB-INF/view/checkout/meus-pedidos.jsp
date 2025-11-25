@@ -316,17 +316,9 @@
                                 </div>
 
                                 <div class="order-actions">
-                                    <a href="#" class="btn btn-outline">
+                                    <a href="${pageContext.request.contextPath}/pedidos/detalhes?numero=${pedido.numeroPedido}" class="btn btn-outline">
                                         <i class="fas fa-eye"></i> Detalhes
                                     </a>
-
-                                    <c:if test="${pedido.podeSerCancelado()}">
-                                        <button class="btn btn-outline"
-                                                onclick="cancelarPedido(${pedido.id}, '${pedido.numeroPedido}')"
-                                                style="color: #dc3545; border-color: #dc3545;">
-                                            <i class="fas fa-times"></i> Cancelar
-                                        </button>
-                                    </c:if>
                                 </div>
                             </div>
                         </div>

@@ -486,6 +486,26 @@
     </div>
 
     <script>
+
+    // Adicione esta validação antes do submit
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const requiredFields = ['cep', 'logradouro', 'numero', 'bairro', 'cidade', 'uf'];
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+            const input = document.getElementById(field);
+            if (!input.value.trim()) {
+                input.style.borderColor = '#dc3545';
+                isValid = false;
+            }
+        });
+
+        if (!isValid) {
+            e.preventDefault();
+            alert('Por favor, preencha todos os campos obrigatórios.');
+        }
+    });
+
         // Máscara do CEP
         document.getElementById('cep').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
@@ -539,7 +559,7 @@
           cepInput.disabled = true;
           limparErroCep();
 
-          const url = '/api/cep/' + cep;
+          const url = '${pageContext.request.contextPath}/cep-api/' + cep;
 
           fetch(url)
           .then(response => {

@@ -3,6 +3,7 @@ br\com\bytx\controller\estoque\EstoqueDashboardServlet.class
 br\com\bytx\controller\produto\VisualizarProdutoServlet.class
 br\com\bytx\controller\pedido\RevisaoCheckoutServlet.class
 br\com\bytx\controller\api\CepServlet.class
+br\com\bytx\controller\estoque\ListaPedidosEstoqueServlet.class
 br\com\bytx\util\ValidadorCPF.class
 br\com\bytx\controller\produto\EstoqueProdutoServlet.class
 br\com\bytx\filter\AuthFilter.class
@@ -50,10 +51,12 @@ br\com\bytx\service\CepService.class
 br\com\bytx\util\CriptografiaUtil.class
 br\com\bytx\model\cliente\Endereco.class
 br\com\bytx\model\Usuario.class
+br\com\bytx\controller\estoque\EditarPedidoServlet.class
 br\com\bytx\controller\produto\ImagemProdutoServlet.class
 br\com\bytx\listener\AppInitializer.class
 br\com\bytx\util\ConexaoH2.class
 br\com\bytx\model\pedido\ItemPedido.class
 br\com\bytx\controller\usuarios\EditarUsuarioServlet.class
 br\com\bytx\model\carrinho\ItemCarrinho.class
+br\com\bytx\controller\pedido\DetalhesPedidoServlet.class
 br\com\bytx\controller\usuarios\TestarClienteServlet.class

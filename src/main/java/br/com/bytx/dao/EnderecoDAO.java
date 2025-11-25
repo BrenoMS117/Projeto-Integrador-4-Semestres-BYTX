@@ -3,6 +3,7 @@ package br.com.bytx.dao;
 import br.com.bytx.model.cliente.Endereco;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,16 +13,18 @@ public class EnderecoDAO {
         return DriverManager.getConnection("jdbc:h2:~/test", "sa", "sa");
     }
 
-    // Inserir endereço
     public boolean inserirEndereco(Endereco endereco) {
-        String SQL = "INSERT INTO enderecos_clientes (cliente_id, tipo, cep, logradouro, numero, complemento, bairro, cidade, uf, padrao, ativado) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String SQL = "INSERT INTO enderecos_clientes (cliente_id, tipo, cep, logradouro, numero, complemento, bairro, cidade, uf, padrao, ativado, data_criacao) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
+            // Log para debug
+            System.out.println("🎯 Inserindo endereço para cliente: " + endereco.getClienteId());
+
             ps.setLong(1, endereco.getClienteId());
-            ps.setString(2,     endereco.getTipo());
+            ps.setString(2, endereco.getTipo());
             ps.setString(3, endereco.getCep());
             ps.setString(4, endereco.getLogradouro());
             ps.setString(5, endereco.getNumero());
@@ -31,21 +34,30 @@ public class EnderecoDAO {
             ps.setString(9, endereco.getUf());
             ps.setBoolean(10, endereco.isPadrao());
             ps.setBoolean(11, endereco.isAtivado());
+            ps.setTimestamp(12, Timestamp.valueOf(
+                    endereco.getDataCriacao() != null ? endereco.getDataCriacao() : LocalDateTime.now()
+            ));
 
             int result = ps.executeUpdate();
+            System.out.println("📊 Resultado do insert: " + result + " linhas afetadas");
 
             if (result > 0) {
                 try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        endereco.setId(generatedKeys.getLong(1));
+                        long novoId = generatedKeys.getLong(1);
+                        endereco.setId(novoId);
+                        System.out.println("🆕 Endereço inserido com ID: " + novoId);
                         return true;
                     }
                 }
             }
+            System.out.println("⚠️ Nenhuma linha afetada no insert");
             return false;
 
         } catch (SQLException e) {
-            System.out.println("Erro ao inserir endereço: " + e.getMessage());
+            System.out.println("❌ ERRO SQL no insert: " + e.getMessage());
+            System.out.println("SQL State: " + e.getSQLState() + ", Error Code: " + e.getErrorCode());
+            e.printStackTrace();
             return false;
         }
     }
@@ -91,10 +103,10 @@ public class EnderecoDAO {
         return null;
     }
 
-    // Atualizar endereço
+    // CORREÇÃO COMPLETA do método atualizarEndereco
     public boolean atualizarEndereco(Endereco endereco) {
         String SQL = "UPDATE enderecos_clientes SET tipo = ?, cep = ?, logradouro = ?, numero = ?, " +
-                "complemento = ?, bairro = ?, cidade = ?, uf = ?, padrao = ? WHERE id = ?";
+                "complemento = ?, bairro = ?, cidade = ?, uf = ?, padrao = ?, ativado = ? WHERE id = ?";
 
         try (Connection connection = getConnection();
              PreparedStatement ps = connection.prepareStatement(SQL)) {
@@ -109,13 +121,18 @@ public class EnderecoDAO {
             ps.setString(8, endereco.getUf());
             ps.setBoolean(9, endereco.isPadrao());
             ps.setBoolean(10, endereco.isAtivado());
-            ps.setLong(11, endereco.getId());
+            ps.setLong(11, endereco.getId()); // ← Agora é o 11º parâmetro
 
+            System.out.println("🔄 Executando update do endereço ID: " + endereco.getId());
             int result = ps.executeUpdate();
+
+            System.out.println("✅ Update executado, linhas afetadas: " + result);
             return result > 0;
 
         } catch (SQLException e) {
-            System.out.println("Erro ao atualizar endereço: " + e.getMessage());
+            System.out.println("❌ ERRO SQL no update do endereço: " + e.getMessage());
+            System.out.println("SQL State: " + e.getSQLState() + ", Error Code: " + e.getErrorCode());
+            e.printStackTrace();
             return false;
         }
     }

@@ -308,7 +308,9 @@
         <div class="sidebar">
             <ul class="sidebar-menu">
                 <li><a href="${pageContext.request.contextPath}/estoque/produtos" style="text-decoration: none; color: inherit;"><i class="fas fa-boxes"></i> Gerenciar Estoque</a></li>
+                <li><a href="${pageContext.request.contextPath}/estoque/pedidos" style="text-decoration: none; color: inherit;"><i class="fas fa-clipboard-list"></i> Gerenciar Pedidos</a></li>
             </ul>
+
         </div>
 
         <div class="main-content">

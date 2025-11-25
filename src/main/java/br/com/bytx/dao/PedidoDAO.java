@@ -232,25 +232,6 @@ public class PedidoDAO {
         return null;
     }
 
-    public Pedido buscarPorNumero(String numeroPedido) {
-        String SQL = "SELECT p.* FROM pedidos p WHERE p.numero_pedido = ?";
-
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(SQL)) {
-
-            ps.setString(1, numeroPedido);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return mapearPedido(rs);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("❌ Erro ao buscar pedido por número: " + e.getMessage());
-        }
-        return null;
-    }
-
     private Pedido mapearPedido(ResultSet rs) throws SQLException {
         Pedido pedido = new Pedido();
         pedido.setId(rs.getLong("id"));
@@ -362,4 +343,30 @@ public class PedidoDAO {
         }
         return pedidos;
     }
+
+    public Pedido buscarPorNumero(String numeroPedido) {
+        System.out.println("🔍 PedidoDAO.buscarPorNumero() - Buscando: " + numeroPedido);
+
+        String SQL = "SELECT p.* FROM pedidos p WHERE p.numero_pedido = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(SQL)) {
+
+            ps.setString(1, numeroPedido);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                System.out.println("✅ Pedido encontrado no banco: " + numeroPedido);
+                return mapearPedido(rs);
+            } else {
+                System.out.println("❌ Pedido NÃO encontrado no banco: " + numeroPedido);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("❌ ERRO no PedidoDAO.buscarPorNumero: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
